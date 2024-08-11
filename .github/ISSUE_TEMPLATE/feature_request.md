@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-## Background
+# Background
 
 **의도**
 
@@ -15,10 +15,10 @@ assignees: ''
 
 **고려하고 있는 대안**
 
-## Tasks
+# Tasks
 - [ ] example
 
-## Acceptance Criteria
+# Acceptance Criteria
 - [ ] example
 
-## References
+# References
