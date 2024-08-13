@@ -1,4 +1,4 @@
 package com.tripmate.api.dto.response;
 
-public class SpotResponse {
+public record SpotResponse(Long id, String name) {
 }
