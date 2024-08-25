@@ -29,9 +29,9 @@ public class SpotControllerTest {
     @WithMockUser
     public void testGetSpots() throws Exception {
         // given
-        double latitude = 37.1234;
-        double longitude = -122.4321;
-        double range = 10.0;
+        String latitude = "37.1234";
+        String longitude = "-122.4321";
+        String range = "10000.0";
 
         List<SpotResponse> spots = List.of(
                 new SpotResponse(1L, ""),
@@ -42,9 +42,9 @@ public class SpotControllerTest {
 
         // when&then
         mockMvc.perform(get("/api/v1/spots")
-                        .param("latitude", String.valueOf(latitude))
-                        .param("longitude", String.valueOf(longitude))
-                        .param("range", String.valueOf(range)))
+                        .param("latitude", latitude)
+                        .param("longitude", longitude)
+                        .param("range", range))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].id").value(1))

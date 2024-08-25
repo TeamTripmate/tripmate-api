@@ -20,9 +20,9 @@ public class SpotController {
 
     @GetMapping()
     public ResponseEntity<List<SpotResponse>> getSpots(
-            @RequestParam double latitude,
-            @RequestParam double longitude,
-            @RequestParam double range
+            @RequestParam String latitude,
+            @RequestParam String longitude,
+            @RequestParam String range
     ) {
         List<SpotResponse> spots = spotService.findSpotsByLocation(latitude, longitude, range);
         return ResponseEntity.ok(spots);
