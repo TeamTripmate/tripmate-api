@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
   datasource:
     url: jdbc:postgresql://localhost:5432/tripmate
     username: test
@@ -24,3 +26,9 @@ springdoc:
   default-produces-media-type: application/json
   paths-to-match:
     - /api/v1/**
+
+integration:
+  tourapi:
+    service-key: ${TOUR_API_SERVICE_KEY}
+    mobile-app: ${TOUR_API_MOBILE_APP}
+    mobile-os: ${TOUR_API_MOBILE_OS}
