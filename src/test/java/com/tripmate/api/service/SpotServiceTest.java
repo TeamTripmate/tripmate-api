@@ -1,26 +1,38 @@
 package com.tripmate.api.service;
 
-import com.tripmate.api.repository.SpotRepository;
+import com.tripmate.api.dto.response.SpotResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.client.RestClient;
+
+import java.util.List;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 class SpotServiceTest {
 
+    @Mock
+    private RestClient restClient;
+
     @Autowired
     private SpotService spotService;
 
-    @MockBean
-    private SpotRepository spotRepository;
-
     @Test
     public void testFindSpotsByLocation() {
-        
+        // given
+        String latitude = "127.1225635";
+        String longitude = "37.4855846";
+        String range = "10000";
+
+        List<SpotResponse> spots = spotService.findSpotsByLocation(latitude, longitude, range);
+
+
+
     }
 
 }
