@@ -2,7 +2,9 @@ package com.tripmate.api.service;
 
 import com.tripmate.api.dto.response.SpotResponse;
 import com.tripmate.integration.tourapi.TourApiRestClient;
+import com.tripmate.integration.tourapi.dto.response.LocationBasedSpotListResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -21,9 +23,9 @@ public class SpotService {
         queryParams.add("mapY", longitude);
         queryParams.add("radius", range);
 
-        String response = tourApiRestClient.get(
+        ResponseEntity<LocationBasedSpotListResponse> response = tourApiRestClient.get(
                 "B551011/KorService1/locationBasedList1",
-                String.class,
+                LocationBasedSpotListResponse.class,
                 queryParams
         );
 
