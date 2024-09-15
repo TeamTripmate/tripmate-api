@@ -1,6 +1,5 @@
 services:
   app:
-    image: tripmate-api:latest
     build:
       context: ./
     ports:
