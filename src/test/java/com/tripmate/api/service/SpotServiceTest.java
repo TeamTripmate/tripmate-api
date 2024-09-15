@@ -32,7 +32,6 @@ class SpotServiceTest {
         List<SpotResponse> spots = spotService.findSpotsByLocation(latitude, longitude, range);
 
 
-
     }
 
 }
