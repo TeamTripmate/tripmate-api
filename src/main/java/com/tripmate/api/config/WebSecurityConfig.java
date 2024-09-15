@@ -18,7 +18,7 @@ public class WebSecurityConfig {
                 .formLogin(FormLoginConfigurer::disable)
                 .authorizeHttpRequests(
                         requests -> requests
-                                .requestMatchers("/api/v1/*").permitAll()
+                                .requestMatchers("/api/v1/*","/health/**", "/v1/**","/swagger-ui/**").permitAll()
                                 .anyRequest().authenticated()
                 );
 

@@ -30,6 +30,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.postgresql:postgresql")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
+	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
