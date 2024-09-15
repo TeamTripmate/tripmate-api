@@ -6,11 +6,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@Import({ TourApiConfig.class })
+@Import({TourApiConfig.class})
 public class TripmateApiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TripmateApiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TripmateApiApplication.class, args);
+    }
 
 }

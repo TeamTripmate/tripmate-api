@@ -1,12 +1,27 @@
 services:
-  postgres:
-    image: postgres:15
-    restart: always
-    volumes:
-      - ./bin/postgres-data:/var/lib/postgresql/data
+  app:
+    build:
+      context: ./
     ports:
-      - "5432:5432"
+      - "8080:8080"
+    depends_on:
+      - mysql
+    profiles:
+      - "prod"
+  mysql:
+    image: mysql:8.3.0
+    restart: always
     environment:
-      POSTGRES_USER: test
-      POSTGRES_PASSWORD: test123@
-      POSTGRES_DB: tripmate
+      MYSQL_ROOT_PASSWORD: tripmate
+      MYSQL_DATABASE: tripmate
+      MYSQL_USER: tripmate
+      MYSQL_PASSWORD: tripmate
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./bin/mysql/data:/var/lib/mysql
+      - ./bin/mysql/initdb.d:/docker-entrypoint-initdb.d
+    profiles:
+      - "prod"
+      - "test"
+      - "local"
