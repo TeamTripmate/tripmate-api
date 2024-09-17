@@ -1,5 +1,6 @@
 package com.tripmate.api.service;
 
+import com.tripmate.api.dto.request.LocationBasedSpotSearchRequest;
 import com.tripmate.api.dto.spot.LocationBasedSpotRecord;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,16 +20,19 @@ class SpotServiceTest {
     private RestClient restClient;
 
     @Autowired
-    private LocationBasedSpotService locationBasedSpotService;
+    private LocationBasedSpotSearchService locationBasedSpotSearchService;
 
     @Test
     public void testFindSpotsByLocation() {
         // given
-        String latitude = "127.1225635";
-        String longitude = "37.4855846";
-        String range = "10000";
+        LocationBasedSpotSearchRequest request = new LocationBasedSpotSearchRequest(
+                "127.1225635",
+                "37.4855846",
+                "10000.0",
+                null
+        );
 
-        List<LocationBasedSpotRecord> spots = locationBasedSpotService.findSpotsByLocation(latitude, longitude, range);
+        List<LocationBasedSpotRecord> spots = locationBasedSpotSearchService.searchLocationBasedSpots(request);
 
 
     }

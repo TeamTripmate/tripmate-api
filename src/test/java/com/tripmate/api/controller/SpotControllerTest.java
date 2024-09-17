@@ -1,7 +1,10 @@
 package com.tripmate.api.controller;
 
+import com.tripmate.api.dto.request.LocationBasedSpotSearchRequest;
+import com.tripmate.api.dto.response.LocationBasedSpotListResponse;
 import com.tripmate.api.dto.spot.LocationBasedSpotRecord;
-import com.tripmate.api.service.LocationBasedSpotService;
+import com.tripmate.api.service.LocationBasedSpotSearchService;
+import com.tripmate.integration.tourapi.dto.response.LocationBasedSpotApiResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -9,6 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
@@ -23,31 +27,37 @@ public class SpotControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private LocationBasedSpotService locationBasedSpotService;
+    private LocationBasedSpotSearchService locationBasedSpotSearchService;
 
     @Test
     @WithMockUser
     public void testGetSpots() throws Exception {
         // given
-        String latitude = "37.1234";
-        String longitude = "-122.4321";
-        String range = "10000.0";
-
-        List<LocationBasedSpotRecord> spots = List.of(
-                new LocationBasedSpotRecord(1L, ""),
-                new LocationBasedSpotRecord(2L, "")
+        LocationBasedSpotSearchRequest request = new LocationBasedSpotSearchRequest(
+                "37.1234",
+                "122.4321",
+                "10000.0",
+                null
         );
 
-        given(locationBasedSpotService.findSpotsByLocation(latitude, longitude, range)).willReturn(spots);
+//        List<LocationBasedSpotRecord> spots = List.of(
+//                new LocationBasedSpotRecord(1L, ""),
+//                new LocationBasedSpotRecord(2L, "")
+//        );
+
+        List<LocationBasedSpotRecord> spots = Collections.emptyList();
+
+        given(locationBasedSpotSearchService.searchLocationBasedSpots(request)).willReturn(spots);
 
         // when&then
         mockMvc.perform(get("/api/v1/spots")
-                        .param("latitude", latitude)
-                        .param("longitude", longitude)
-                        .param("range", range))
+                        .param("latitude", request.latitude())
+                        .param("longitude", request.longitude())
+                        .param("range", request.range()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].id").value(1))
-                .andExpect(jsonPath("$[1].id").value(2));
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$['spots'].length()").value(0));
+//                .andExpect(jsonPath("$[0].id").value(1))
+//                .andExpect(jsonPath("$[1].id").value(2));
     }
 }

@@ -1,13 +1,15 @@
 package com.tripmate.api.controller;
 
+import com.tripmate.api.dto.request.LocationBasedSpotSearchRequest;
+import com.tripmate.api.dto.response.LocationBasedSpotListResponse;
 import com.tripmate.api.dto.spot.LocationBasedSpotRecord;
-import com.tripmate.api.service.LocationBasedSpotService;
+import com.tripmate.api.service.LocationBasedSpotSearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -16,15 +18,13 @@ import java.util.List;
 @RequestMapping("/api/v1/spots")
 public class SpotController {
 
-    private final LocationBasedSpotService locationBasedSpotService;
+    private final LocationBasedSpotSearchService locationBasedSpotSearchService;
 
     @GetMapping()
-    public ResponseEntity<List<LocationBasedSpotRecord>> getSpots(
-            @RequestParam String latitude,
-            @RequestParam String longitude,
-            @RequestParam String range
+    public ResponseEntity<LocationBasedSpotListResponse> getSpots(
+            @ModelAttribute LocationBasedSpotSearchRequest request
     ) {
-        List<LocationBasedSpotRecord> spots = locationBasedSpotService.findSpotsByLocation(latitude, longitude, range);
-        return ResponseEntity.ok(spots);
+        List<LocationBasedSpotRecord> spots = locationBasedSpotSearchService.searchLocationBasedSpots(request);
+        return ResponseEntity.ok(new LocationBasedSpotListResponse(spots));
     }
 }
