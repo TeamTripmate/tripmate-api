@@ -9,9 +9,9 @@ public record LocationBasedSpotItem(
 
         @JsonProperty("addr2") String addr2,
 
-        @JsonProperty("areacode") String areacode,
+        @JsonProperty("areacode") String areaCode,
 
-        @JsonProperty("booktour") String booktour,
+        @JsonProperty("booktour") String bookTour,
 
         @JsonProperty("cat1") String cat1,
 
@@ -19,29 +19,29 @@ public record LocationBasedSpotItem(
 
         @JsonProperty("cat3") String cat3,
 
-        @JsonProperty("contentid") String contentid,
+        @JsonProperty("contentid") Long contentId,
 
-        @JsonProperty("contenttypeid") String contenttypeid,
+        @JsonProperty("contenttypeid") String contentTypeId,
 
-        @JsonProperty("createdtime") String createdtime,
+        @JsonProperty("createdtime") String createdTime,
 
         @JsonProperty("dist") String dist,
 
-        @JsonProperty("firstimage") String firstimage,
+        @JsonProperty("firstimage") String firstImage,
 
-        @JsonProperty("firstimage2") String firstimage2,
+        @JsonProperty("firstimage2") String firstImage2,
 
         @JsonProperty("cpyrhtDivCd") String cpyrhtDivCd,
 
-        @JsonProperty("mapx") String mapx,
+        @JsonProperty("mapx") String mapX,
 
-        @JsonProperty("mapy") String mapy,
+        @JsonProperty("mapy") String mapY,
 
-        @JsonProperty("mlevel") int mlevel,
+        @JsonProperty("mlevel") int mLevel,
 
-        @JsonProperty("modifiedtime") String modifiedtime,
+        @JsonProperty("modifiedtime") String modifiedTime,
 
-        @JsonProperty("sigungucode") String sigungucode,
+        @JsonProperty("sigungucode") String siGunGuCode,
 
         @JsonProperty("tel") String tel,
 
