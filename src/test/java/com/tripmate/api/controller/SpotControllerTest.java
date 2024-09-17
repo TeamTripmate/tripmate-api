@@ -1,7 +1,7 @@
 package com.tripmate.api.controller;
 
-import com.tripmate.api.dto.response.SpotResponse;
-import com.tripmate.api.service.SpotService;
+import com.tripmate.api.dto.spot.LocationBasedSpotRecord;
+import com.tripmate.api.service.LocationBasedSpotService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -23,7 +23,7 @@ public class SpotControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private SpotService spotService;
+    private LocationBasedSpotService locationBasedSpotService;
 
     @Test
     @WithMockUser
@@ -33,12 +33,12 @@ public class SpotControllerTest {
         String longitude = "-122.4321";
         String range = "10000.0";
 
-        List<SpotResponse> spots = List.of(
-                new SpotResponse(1L, ""),
-                new SpotResponse(2L, "")
+        List<LocationBasedSpotRecord> spots = List.of(
+                new LocationBasedSpotRecord(1L, ""),
+                new LocationBasedSpotRecord(2L, "")
         );
 
-        given(spotService.findSpotsByLocation(latitude, longitude, range)).willReturn(spots);
+        given(locationBasedSpotService.findSpotsByLocation(latitude, longitude, range)).willReturn(spots);
 
         // when&then
         mockMvc.perform(get("/api/v1/spots")

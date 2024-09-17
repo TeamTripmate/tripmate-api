@@ -1,9 +1,8 @@
 package com.tripmate.api.service;
 
-import com.tripmate.api.dto.response.SpotResponse;
+import com.tripmate.api.dto.spot.LocationBasedSpotRecord;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +19,7 @@ class SpotServiceTest {
     private RestClient restClient;
 
     @Autowired
-    private SpotService spotService;
+    private LocationBasedSpotService locationBasedSpotService;
 
     @Test
     public void testFindSpotsByLocation() {
@@ -29,7 +28,7 @@ class SpotServiceTest {
         String longitude = "37.4855846";
         String range = "10000";
 
-        List<SpotResponse> spots = spotService.findSpotsByLocation(latitude, longitude, range);
+        List<LocationBasedSpotRecord> spots = locationBasedSpotService.findSpotsByLocation(latitude, longitude, range);
 
 
     }
