@@ -53,7 +53,8 @@ public class SpotControllerTest {
         mockMvc.perform(get("/api/v1/spots")
                         .param("latitude", request.latitude())
                         .param("longitude", request.longitude())
-                        .param("range", request.range()))
+                        .param("range", request.range())
+                        .param("category", "EXPERIENCE"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$['spots'].length()").value(0));
