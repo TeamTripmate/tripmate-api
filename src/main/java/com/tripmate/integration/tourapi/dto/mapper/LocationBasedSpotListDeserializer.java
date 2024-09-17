@@ -6,13 +6,13 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tripmate.integration.tourapi.dto.response.LocationBasedSpotItem;
-import com.tripmate.integration.tourapi.dto.response.LocationBasedSpotListResponse;
+import com.tripmate.integration.tourapi.dto.response.LocationBasedSpotApiResponse;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class LocationBasedSpotListDeserializer extends JsonDeserializer<LocationBasedSpotListResponse> {
+public class LocationBasedSpotListDeserializer extends JsonDeserializer<LocationBasedSpotApiResponse> {
 
     private final ObjectMapper mapper;
 
@@ -21,12 +21,12 @@ public class LocationBasedSpotListDeserializer extends JsonDeserializer<Location
     }
 
     @Override
-    public LocationBasedSpotListResponse deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    public LocationBasedSpotApiResponse deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         JsonNode node = jp.getCodec().readTree(jp);
         JsonNode items = node.findValue("item");
 
         List<LocationBasedSpotItem> spotItems = Arrays.stream(mapper.treeToValue(items, LocationBasedSpotItem[].class)).toList();
 
-        return new LocationBasedSpotListResponse(spotItems);
+        return new LocationBasedSpotApiResponse(spotItems);
     }
 }

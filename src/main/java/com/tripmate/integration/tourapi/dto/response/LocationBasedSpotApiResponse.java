@@ -9,7 +9,7 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonDeserialize(using = LocationBasedSpotListDeserializer.class)
-public record LocationBasedSpotListResponse(
+public record LocationBasedSpotApiResponse(
         @JsonProperty("item")
         List<LocationBasedSpotItem> spotItems
 ) {
