@@ -1,6 +1,7 @@
 package com.tripmate.integration.tourapi.config;
 
 import com.tripmate.integration.tourapi.TourApiRestClient;
+import com.tripmate.integration.tourapi.service.TourApiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -22,5 +23,10 @@ public class TourApiConfig {
                 properties.mobileApp(),
                 properties.mobileOS()
         );
+    }
+
+    @Bean
+    public TourApiService tourApiService() {
+        return new TourApiService(tourApiRestClient());
     }
 }

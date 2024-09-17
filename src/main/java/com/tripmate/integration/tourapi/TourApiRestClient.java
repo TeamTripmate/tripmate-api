@@ -1,6 +1,8 @@
 package com.tripmate.integration.tourapi;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriBuilder;
@@ -28,18 +30,19 @@ public class TourApiRestClient {
         this.mobileOS = mobileOS;
     }
 
-    public <T> T get(String path, Class<T> responseType, MultiValueMap<String, String> queryParams) {
+    public <T> ResponseEntity<T> get(String path, Class<T> responseType, MultiValueMap<String, String> queryParams) {
         return this.restClient.get()
                 .uri(buildUri(path, queryParams))
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .body(responseType);
+                .toEntity(responseType);
     }
 
     private Function<UriBuilder, URI> buildUri(String path, MultiValueMap<String, String> queryParams) {
         return uriBuilder -> {
             UriBuilder builder = uriBuilder
                     .path(path)
+                    .queryParam("_type", "json")
                     .queryParam("serviceKey", "{serviceKey}")
                     .queryParam("MobileApp", mobileApp)
                     .queryParam("MobileOS", mobileOS);
