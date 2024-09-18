@@ -1,6 +1,6 @@
 package com.tripmate.api.dto.request;
 
-import com.tripmate.api.domain.SpotCategory;
+import com.tripmate.api.domain.spot.SpotCategory;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 

@@ -1,6 +1,6 @@
 package com.tripmate.api.dto.response;
 
-import com.tripmate.api.dto.spot.LocationBasedSpotRecord;
+import com.tripmate.api.dto.spot.LocationBasedSpotInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
@@ -10,6 +10,6 @@ import java.util.List;
 @Builder
 public record LocationBasedSpotListResponse(
         @Schema(description = "위치 기반 여행지 목록")
-        List<LocationBasedSpotRecord> spots
+        List<LocationBasedSpotInfo> spots
 ) {
 }

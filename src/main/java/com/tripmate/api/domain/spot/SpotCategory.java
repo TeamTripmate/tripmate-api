@@ -1,4 +1,4 @@
-package com.tripmate.api.domain;
+package com.tripmate.api.domain.spot;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

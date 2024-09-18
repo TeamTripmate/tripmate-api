@@ -1,10 +1,8 @@
 package com.tripmate.api.controller;
 
 import com.tripmate.api.dto.request.LocationBasedSpotSearchRequest;
-import com.tripmate.api.dto.response.LocationBasedSpotListResponse;
-import com.tripmate.api.dto.spot.LocationBasedSpotRecord;
+import com.tripmate.api.dto.spot.LocationBasedSpotInfo;
 import com.tripmate.api.service.LocationBasedSpotSearchService;
-import com.tripmate.integration.tourapi.dto.response.LocationBasedSpotApiResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -45,7 +43,7 @@ public class SpotControllerTest {
 //                new LocationBasedSpotRecord(2L, "")
 //        );
 
-        List<LocationBasedSpotRecord> spots = Collections.emptyList();
+        List<LocationBasedSpotInfo> spots = Collections.emptyList();
 
         given(locationBasedSpotSearchService.searchLocationBasedSpots(request)).willReturn(spots);
 
