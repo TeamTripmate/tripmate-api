@@ -1,5 +1,6 @@
 package com.tripmate.api.controller;
 
+import com.tripmate.api.dto.request.CompanionApplyRequest;
 import com.tripmate.api.dto.request.CollectCompanionRequest;
 import com.tripmate.api.dto.request.CompanionReviewRequest;
 import com.tripmate.api.dto.response.CompanionInfoResponse;
@@ -53,6 +54,16 @@ public class CompanionController {
     )
     @PostMapping("/review")
     public ResponseEntity<Void> createCompanionReview(@Valid @RequestBody CompanionReviewRequest companionReviewRequest) {
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+     }
+
+    @Operation(
+        summary = "동행 신청 API",
+        description = ""
+    )
+    @PostMapping("/apply")
+    public ResponseEntity<Void> createCompanionApply(@Valid @RequestBody CompanionApplyRequest companionApplyRequest) {
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
      }
