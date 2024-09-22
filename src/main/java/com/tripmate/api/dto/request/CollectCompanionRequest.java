@@ -2,6 +2,8 @@ package com.tripmate.api.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
+import lombok.Getter;
 
 public record CollectCompanionRequest(
 

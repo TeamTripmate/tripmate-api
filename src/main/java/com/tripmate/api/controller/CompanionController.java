@@ -30,6 +30,8 @@ public class CompanionController {
     @PostMapping("")
     public ResponseEntity<Void> collectCompanion(@Valid @RequestBody CollectCompanionRequest collectCompanionRequest) {
 
+        companionService.saveCompanionInfo(collectCompanionRequest);
+
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
