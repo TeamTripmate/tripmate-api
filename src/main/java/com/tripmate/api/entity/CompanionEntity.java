@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,7 +31,7 @@ public class CompanionEntity {
     @NotNull
     private String description;  // 내용
     @NotNull
-    private String startDate;  // 동행 시작일
+    private LocalDateTime startDate;  // 동행 시작일
     @NotNull
     private String companionType;  // 동행 유형
     @NotNull
