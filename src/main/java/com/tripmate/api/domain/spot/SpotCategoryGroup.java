@@ -13,29 +13,29 @@ public enum SpotCategoryGroup {
     ACTIVITY(
             "액티비티",
             Arrays.asList(
-                    SpotCategory.EXPERIENCE,
-                    SpotCategory.CULTURE_AND_ART,
-                    SpotCategory.FESTIVAL_AND_PERFORMANCE,
-                    SpotCategory.TRIP_ITINERARY,
-                    SpotCategory.LEISURE_SPORTS,
-                    SpotCategory.ACCOMMODATION,
-                    SpotCategory.SHOPPING,
-                    SpotCategory.RESTAURANT_AND_CAFE
+                    SpotType.EXPERIENCE,
+                    SpotType.CULTURE_AND_ART,
+                    SpotType.FESTIVAL_AND_PERFORMANCE,
+                    SpotType.TRIP_ITINERARY,
+                    SpotType.LEISURE_SPORTS,
+                    SpotType.ACCOMMODATION,
+                    SpotType.SHOPPING,
+                    SpotType.RESTAURANT_AND_CAFE
             )
     ),
     HEALING(
             "힐링",
             Arrays.asList(
-                    SpotCategory.NATURE_AND_REST,
-                    SpotCategory.CULTURE_AND_ART,
-                    SpotCategory.HISTORY,
-                    SpotCategory.ACCOMMODATION,
-                    SpotCategory.SHOPPING,
-                    SpotCategory.RESTAURANT_AND_CAFE
+                    SpotType.NATURE_AND_REST,
+                    SpotType.CULTURE_AND_ART,
+                    SpotType.HISTORY,
+                    SpotType.ACCOMMODATION,
+                    SpotType.SHOPPING,
+                    SpotType.RESTAURANT_AND_CAFE
             )
     );
 
     private final String name;
 
-    private final List<SpotCategory> categories;
+    private final List<SpotType> categories;
 }
