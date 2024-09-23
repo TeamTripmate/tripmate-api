@@ -4,6 +4,7 @@ import com.tripmate.api.dto.request.CollectCompanionRequest;
 import com.tripmate.api.dto.response.CompanionInfoResponse;
 import com.tripmate.api.entity.CompanionEntity;
 import com.tripmate.api.entity.CompanionRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -17,9 +18,13 @@ public class CompanionService {
     private final ModelMapper modelMapper;
     private final CompanionRepository companionRepository;
 
-    public CompanionInfoResponse getCompanionInfo() {
+    public CompanionInfoResponse getCompanionInfo(Long companionId) {
+        Optional<CompanionEntity> companion = companionRepository.findById(companionId);
 
-        return null;
+        if (companion.isEmpty()) {
+            return null;
+        }
+        return CompanionInfoResponse.toResponse(companion.get(), null, null, null);
     }
 
     public void saveCompanionInfo(CollectCompanionRequest collectCompanionRequest) {
