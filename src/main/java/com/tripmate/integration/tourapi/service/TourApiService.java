@@ -15,8 +15,8 @@ public class TourApiService {
 
     public LocationBasedSpotApiResponse findSpotsByLocation(String latitude, String longitude, String range) {
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-        queryParams.add("mapX", latitude);
-        queryParams.add("mapY", longitude);
+        queryParams.add("mapX", longitude);
+        queryParams.add("mapY", latitude);
         queryParams.add("radius", range);
 
         ResponseEntity<LocationBasedSpotApiResponse> response = tourApiRestClient.get(
