@@ -40,6 +40,7 @@ public class JwtTokenProvider {
         claims.put("nickname", inputDto.getNickname());
         claims.put("thumbnailImageUrl", inputDto.getThumbnailImageUrl());
         claims.put("profileImageUrl", inputDto.getProfileImageUrl());
+        claims.put("accessToken", inputDto.getAccessToken());
 
         Date now = new Date();
 

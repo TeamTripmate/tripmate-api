@@ -15,4 +15,5 @@ public class LoginJwtInputDto {
     private String nickname;
     private String thumbnailImageUrl;
     private String profileImageUrl;
+    private String accessToken;
 }
