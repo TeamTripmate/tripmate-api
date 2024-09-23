@@ -3,10 +3,13 @@ package com.tripmate.api.dto.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tripmate.api.dto.companion.HostInfo;
 import com.tripmate.api.dto.companion.ReviewInfo;
+import com.tripmate.api.entity.CompanionEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.Builder;
 
+@Builder
 public record CompanionInfoResponse(
     String title,
     String spotId,
@@ -25,4 +28,18 @@ public record CompanionInfoResponse(
     List<String> reviewRanks
 ) {
 
+    public static CompanionInfoResponse toResponse(CompanionEntity entity, HostInfo hostInfo, List<ReviewInfo> reviewInfos, List<String> reviewRanks) {
+        return CompanionInfoResponse.builder()
+            .title(entity.getTitle())
+            .spotId(entity.getSpotId().toString())  // Long을 String으로 변환
+            .date(entity.getStartDate())  // LocalDateTime 사용
+            // TODO : 유형 정보 enum 필요
+            .accompanyYn("ACCOMPANY".equals(entity.getCompanionType()))  // 동행 여부를 boolean으로 변환
+            .chatLink(entity.getOpenChatLink())
+            .description(entity.getDescription())
+            .hostInfo(hostInfo)  // 호스트 정보
+            .reviewInfos(reviewInfos)  // 리뷰 정보 리스트
+            .reviewRanks(reviewRanks)  // 리뷰 태그 순위
+            .build();
+    }
 }

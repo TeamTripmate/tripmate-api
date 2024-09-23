@@ -56,4 +56,4 @@ REDIRECT_URL: ${baseUrl}/view/home
 
 jwt:
   key: projectKey-which-is-longer-than-32bits-complete
-  access_token_expiration: 86400000 # 1일
+  access_token_expiration: 604800000 # 7일

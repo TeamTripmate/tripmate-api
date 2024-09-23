@@ -4,6 +4,7 @@ import com.tripmate.api.dto.request.CompanionApplyRequest;
 import com.tripmate.api.dto.request.CollectCompanionRequest;
 import com.tripmate.api.dto.request.CompanionReviewRequest;
 import com.tripmate.api.dto.response.CompanionInfoResponse;
+import com.tripmate.api.dto.response.TripmateApiResponse;
 import com.tripmate.api.service.CompanionService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -41,11 +42,12 @@ public class CompanionController {
         description = ""
     )
     @GetMapping("/user/{companionId}")
-    public ResponseEntity<CompanionInfoResponse> getCompanionInfo(@PathVariable("companionId") Long companionId) {
+    public ResponseEntity<TripmateApiResponse<CompanionInfoResponse>> getCompanionInfo(@PathVariable("companionId") Long companionId) {
 
-        CompanionInfoResponse companionInfo = companionService.getCompanionInfo();
+        CompanionInfoResponse companionInfo = companionService.getCompanionInfo(companionId);
 
-        return ResponseEntity.ok(companionInfo);
+        return ResponseEntity.ok(
+            TripmateApiResponse.success(companionInfo));
     }
 
     @Operation(

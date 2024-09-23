@@ -106,4 +106,42 @@ public class KakaoLoginService {
         return userEntity;
     }
 
+    public UserEntity saveUser(LoginRequest request) {
+
+        Long kakaoId = Long.valueOf(request.id());
+        Optional<UserEntity> user = userRepository.findById(kakaoId);
+
+        if (user.isPresent()) {
+            return user.get();
+        }
+
+        UserEntity userEntity = UserEntity.builder()
+            .kakaoId(kakaoId)
+            .nickname(request.nickname())
+            .profileImage(request.profileImageUrl())
+            .thumbnailImage(request.thumbnailImageUrl()).build();
+        userRepository.save(userEntity);
+
+        return userEntity;
+    }
+
+    /**
+     * 자동 로그인 & 회원가입 메서드
+     *
+     */
+    public String doKakaoAutoLoginV2(LoginRequest request) {
+
+        UserEntity user = saveUser(request);
+
+        LoginJwtInputDto loginJwtInputDto = LoginJwtInputDto.builder()
+            .id(user.getKakaoId())
+            .profileImageUrl(user.getProfileImage())
+            .thumbnailImageUrl(user.getThumbnailImage())
+            .nickname(user.getProfileImage())
+            .accessToken(request.accessToken())
+            .build();
+
+        return jwtTokenProvider.createToken(loginJwtInputDto);
+    }
+
 }
