@@ -1,7 +1,7 @@
 package com.tripmate.api.service;
 
 import com.tripmate.api.dto.request.LocationBasedSpotSearchRequest;
-import com.tripmate.api.dto.spot.LocationBasedSpotRecord;
+import com.tripmate.api.dto.spot.LocationBasedSpotInfo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -32,7 +32,7 @@ class SpotServiceTest {
                 null
         );
 
-        List<LocationBasedSpotRecord> spots = locationBasedSpotSearchService.searchLocationBasedSpots(request);
+        List<LocationBasedSpotInfo> spots = locationBasedSpotSearchService.searchLocationBasedSpots(request);
 
 
     }

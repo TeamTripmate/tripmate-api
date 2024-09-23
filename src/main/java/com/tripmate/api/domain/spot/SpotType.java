@@ -1,11 +1,11 @@
-package com.tripmate.api.domain;
+package com.tripmate.api.domain.spot;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum SpotCategory {
+public enum SpotType {
 
     EXPERIENCE("체험"),
     CULTURE_AND_ART("문화예술"),
