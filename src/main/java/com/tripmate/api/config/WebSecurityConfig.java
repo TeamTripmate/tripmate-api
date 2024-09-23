@@ -27,11 +27,16 @@ public class WebSecurityConfig {
                 .formLogin(FormLoginConfigurer::disable)
                 .authorizeHttpRequests(
                         requests -> requests
-                                .requestMatchers("/api/v1/**", "/health/**", "/v1/**", "/swagger-ui/**", "/view/**", "/api/**","/css/**", "/error/**").permitAll()
+                                .requestMatchers(
+                                        "/api/v1/**", "/health/**", "/v1/**", "/swagger-ui/**",
+                                        "/view/**", "/api/**", "/css/**", "/error/**"
+                                ).permitAll()
                                 .anyRequest().authenticated()
+                )
+                .addFilterBefore(
+                        new JwtAuthFilter(jwtTokenProvider, userRepository),
+                        UsernamePasswordAuthenticationFilter.class
                 );
-
-        http.addFilterBefore(new JwtAuthFilter(jwtTokenProvider,userRepository), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
