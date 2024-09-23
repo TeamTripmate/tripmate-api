@@ -22,11 +22,8 @@ public class LocationBasedSpotSearchService {
                 request.range()
         );
 
-        List<LocationBasedSpotInfo> spots = response.spotItems().stream()
+       return response.spotItems().stream()
                 .map(LocationBasedSpotInfo::fromLocationBasedSpotItem)
                 .toList();
-
-
-        return spots;
     }
 }
