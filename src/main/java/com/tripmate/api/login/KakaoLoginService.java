@@ -3,6 +3,7 @@ package com.tripmate.api.login;
 
 import com.tripmate.api.entity.UserEntity;
 import com.tripmate.api.entity.UserRepository;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -144,4 +145,27 @@ public class KakaoLoginService {
         return jwtTokenProvider.createToken(loginJwtInputDto);
     }
 
+
+    /**
+     * 회원탈퇴 메서드
+     * 활성 유저면 soft delete 진행
+     */
+    public void doWithdrawal(Long id) {
+
+        UserEntity user = userRepository.findById(id)
+            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다", null));
+        if (user.isDeleted()) {
+            throw new NoSuchElementException("존재하지 않는 회원입니다", null);
+        }
+        user.deleteAccount();
+
+        userRepository.save(user);
+    }
+
+    /**
+     * 마이페이지 유저 정보 가져오는 메서드
+     */
+    public void getMypageUserInfo(Long userId) {
+
+    }
 }

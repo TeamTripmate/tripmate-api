@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -24,5 +25,12 @@ public class UserEntity {
     private String profileImage;
     @NotNull
     private String thumbnailImage;
+
+    @ColumnDefault("false")
+    private boolean deleted;
+
+    public void deleteAccount() {
+        this.deleted = true;
+    }
 
 }
