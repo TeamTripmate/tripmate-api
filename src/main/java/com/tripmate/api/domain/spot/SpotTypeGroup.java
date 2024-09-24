@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
-public enum SpotCategoryGroup {
+public enum SpotTypeGroup {
 
     ACTIVITY(
             "액티비티",

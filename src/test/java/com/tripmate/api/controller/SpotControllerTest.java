@@ -32,10 +32,11 @@ public class SpotControllerTest {
     public void testGetSpots() throws Exception {
         // given
         LocationBasedSpotSearchRequest request = new LocationBasedSpotSearchRequest(
+                null,
+                null,
                 "37.1234",
                 "122.4321",
-                "10000.0",
-                null
+                "10000.0"
         );
 
 //        List<LocationBasedSpotRecord> spots = List.of(
@@ -49,10 +50,8 @@ public class SpotControllerTest {
 
         // when&then
         mockMvc.perform(get("/api/v1/spots")
-                        .param("latitude", request.latitude())
-                        .param("longitude", request.longitude())
-                        .param("range", request.range())
-                        .param("category", "EXPERIENCE"))
+                        .param("spotTypeGroup", "")
+                        .param("spotType", ""))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$['spots'].length()").value(0));
