@@ -1,6 +1,8 @@
 package com.tripmate.api.login;
 
 import com.tripmate.api.dto.request.WithdrawalRequest;
+import com.tripmate.api.dto.response.MypageUserInfoResponse;
+import com.tripmate.api.dto.response.TripmateApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,5 +66,16 @@ public class LoginController {
         kakaoLoginService.doWithdrawal(withdrawalRequest.id());
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @Operation(
+        summary = "마이페이지 - 유저 정보 확인 API"
+    )
+    @GetMapping("user/{userId}")
+    public ResponseEntity<TripmateApiResponse<MypageUserInfoResponse>> getUserInfo(@PathVariable("userId") Long userId) {
+
+        kakaoLoginService.getMypageUserInfo(userId);
+
+        return null;
     }
 }

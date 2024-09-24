@@ -162,4 +162,10 @@ public class KakaoLoginService {
         userRepository.save(user);
     }
 
+    /**
+     * 마이페이지 유저 정보 가져오는 메서드
+     */
+    public void getMypageUserInfo(Long userId) {
+
+    }
 }
