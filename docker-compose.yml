@@ -4,6 +4,8 @@ services:
       context: ./
     env_file:
       - .env
+    environment:
+      spring.profiles.active: prod
     ports:
       - "8080:8080"
     depends_on:
@@ -20,6 +22,9 @@ services:
       MYSQL_PASSWORD: tripmate
     ports:
       - "3306:3306"
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
     volumes:
       - ./bin/mysql/data:/var/lib/mysql
       - ./bin/mysql/initdb.d:/docker-entrypoint-initdb.d
