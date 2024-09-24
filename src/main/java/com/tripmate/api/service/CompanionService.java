@@ -2,6 +2,7 @@ package com.tripmate.api.service;
 
 import com.tripmate.api.dto.request.CollectCompanionRequest;
 import com.tripmate.api.dto.request.CompanionReviewRequest;
+import com.tripmate.api.dto.response.CollectCompanionResponse;
 import com.tripmate.api.dto.response.CompanionInfoResponse;
 import com.tripmate.api.entity.CompanionEntity;
 import com.tripmate.api.entity.CompanionRepository;
@@ -31,11 +32,12 @@ public class CompanionService {
         if (companion.isEmpty()) {
             return null;
         }
-        return CompanionInfoResponse.toResponse(companion.get(), null, null, null);
+        return CompanionInfoResponse.toResponse(companion.get(), null, null, null, null, null);
     }
 
-    public void saveCompanionInfo(CollectCompanionRequest collectCompanionRequest) {
+    public CollectCompanionResponse saveCompanionInfo(CollectCompanionRequest collectCompanionRequest) {
 
+        // 동행 엔티티 생성
         CompanionEntity companionEntity = CompanionEntity.builder()
             .spotId(collectCompanionRequest.spotId())
             .title(collectCompanionRequest.title())
@@ -44,8 +46,11 @@ public class CompanionService {
             .companionType(collectCompanionRequest.type())
             .openChatLink(collectCompanionRequest.openChatLink())
             .hostId(collectCompanionRequest.creatorId())
+            .sameGenderYn(collectCompanionRequest.sameGenderYn())
+            .sameAgeYn(collectCompanionRequest.sameAgeYn())
             .build();
 
+        //
 //        modelMapper.typeMap(
 //                CollectCompanionRequest.class, CompanionEntity.class)
 //            .addMappings(mapper -> {
@@ -55,13 +60,17 @@ public class CompanionService {
 //            });
 //        CompanionEntity companionEntity = modelMapper.map(collectCompanionRequest, CompanionEntity.class);
 
-        companionRepository.save(companionEntity);
+        CompanionEntity ce = companionRepository.save(companionEntity);
+        CollectCompanionResponse ccr = CollectCompanionResponse.builder()
+            .companionId(ce.getId()).build();
+        return ccr;
     }
 
     /**
      * 동행 리뷰 저장 메서드
      * @param userId
      * @param companionReviewRequest
+     * TODO: 상대에 대한 리뷰 생성임!!!!! - userId 말고 host 유저 id 가져와서 해당 유저 id로 저장해야함..
      */
     public void saveCompanionReview(Long userId, CompanionReviewRequest companionReviewRequest) {
 
