@@ -14,7 +14,12 @@ public record MypageUserInfoResponse(
     String characterId,
 
     @Schema(description = "여행 스타일")
-    String tripStyle
+    String tripStyle,
+
+    String nickname,
+    String thumbnailImageUrl,
+    String profileImageUrl
+
 ) {
 
 }
