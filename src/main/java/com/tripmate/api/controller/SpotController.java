@@ -2,7 +2,6 @@ package com.tripmate.api.controller;
 
 import com.tripmate.api.domain.spot.Address;
 import com.tripmate.api.domain.spot.Location;
-import com.tripmate.api.domain.spot.SpotCategory;
 import com.tripmate.api.domain.user.TripmateCharacter;
 import com.tripmate.api.domain.user.TripmateCharacterType;
 import com.tripmate.api.dto.request.LocationBasedSpotSearchRequest;
@@ -32,8 +31,8 @@ public class SpotController {
     private final LocationBasedSpotSearchService locationBasedSpotSearchService;
 
     @Operation(
-            summary = "내 근처 여행지 검색 API",
-            description = "위치(위도, 경도), 범위, 카테고리로 여행지 탐색"
+            summary = "여행지 검색 API",
+            description = "위치(위도, 경도) 및 범위, 여행지 타입(예: EXPERIENCE), 여행지 타입 그룹(예: ACTIVITY)로 여행지 탐색"
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful retrieval of spots"),
@@ -41,7 +40,7 @@ public class SpotController {
     @GetMapping()
     public ResponseEntity<TripmateApiResponse<LocationBasedSpotListResponse>> getSpots(
             @Valid
-            @Parameter(description = "위치 및 필터 기준(카테고리)", required = true)
+            @Parameter(description = "여행지 검색 필터(위치 정보 필수)", required = true)
             @ModelAttribute LocationBasedSpotSearchRequest request
     ) {
         List<LocationBasedSpotInfo> spots = locationBasedSpotSearchService.searchLocationBasedSpots(request);
