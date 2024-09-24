@@ -3,6 +3,7 @@ package com.tripmate.api.login;
 
 import com.tripmate.api.entity.UserEntity;
 import com.tripmate.api.entity.UserRepository;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,15 +21,17 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Service
 public class KakaoLoginService {
 
-
-    @Value("${REST_API_KEY}")
+    @Value("${KAKAO_REST_API_KEY}")
     private String clientId;
+
     @Value("${spring.security.oauth2.client.provider.kakao.token-uri}")
     private String KAUTH_TOKEN_URL_HOST;
+
     @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
     private String REDIRECT_URI;
 
     private final UserRepository userRepository;
+
     private final JwtTokenProvider jwtTokenProvider;
 
     /**
@@ -106,4 +109,65 @@ public class KakaoLoginService {
         return userEntity;
     }
 
+    public UserEntity saveUser(LoginRequest request) {
+
+        Long kakaoId = Long.valueOf(request.id());
+        Optional<UserEntity> user = userRepository.findById(kakaoId);
+
+        if (user.isPresent()) {
+            return user.get();
+        }
+
+        UserEntity userEntity = UserEntity.builder()
+            .kakaoId(kakaoId)
+            .nickname(request.nickname())
+            .profileImage(request.profileImageUrl())
+            .thumbnailImage(request.thumbnailImageUrl()).build();
+        userRepository.save(userEntity);
+
+        return userEntity;
+    }
+
+    /**
+     * 자동 로그인 & 회원가입 메서드
+     *
+     */
+    public String doKakaoAutoLoginV2(LoginRequest request) {
+
+        UserEntity user = saveUser(request);
+
+        LoginJwtInputDto loginJwtInputDto = LoginJwtInputDto.builder()
+            .id(user.getKakaoId())
+            .profileImageUrl(user.getProfileImage())
+            .thumbnailImageUrl(user.getThumbnailImage())
+            .nickname(user.getProfileImage())
+            .accessToken(request.accessToken())
+            .build();
+
+        return jwtTokenProvider.createToken(loginJwtInputDto);
+    }
+
+
+    /**
+     * 회원탈퇴 메서드
+     * 활성 유저면 soft delete 진행
+     */
+    public void doWithdrawal(Long id) {
+
+        UserEntity user = userRepository.findById(id)
+            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다", null));
+        if (user.isDeleted()) {
+            throw new NoSuchElementException("존재하지 않는 회원입니다", null);
+        }
+        user.deleteAccount();
+
+        userRepository.save(user);
+    }
+
+    /**
+     * 마이페이지 유저 정보 가져오는 메서드
+     */
+    public void getMypageUserInfo(Long userId) {
+
+    }
 }

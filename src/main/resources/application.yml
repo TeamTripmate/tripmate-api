@@ -1,16 +1,14 @@
+server:
+  port: 8080
+
 spring:
+  profiles:
+    default: local
   config:
     import: optional:file:.env[.properties]
   datasource:
-#    url: jdbc:mysql://localhost:3306/tripmate
-    url: jdbc:mysql://mysql:3306/tripmate
-    username: tripmate
-    password: tripmate
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
     database-platform: org.hibernate.dialect.MySQLDialect
     open-in-view: false
   security:
@@ -18,8 +16,8 @@ spring:
       client:
         registration:
           kakao:
-            client-id: ${REST_API_KEY}  # 카카오 REST API 키
-            redirect-uri: ${baseUrl}/api/v1/oauth/check
+            client-id: ${KAKAO_REST_API_KEY}  # 카카오 REST API 키
+            redirect-uri: http://localhost:8080/api/v1/oauth/check
             authorization-grant-type: authorization_code
             scope: profile_nickname, profile_image
             client-name: Kakao
@@ -50,10 +48,50 @@ integration:
     mobile-app: ${TOUR_API_MOBILE_APP}
     mobile-os: ${TOUR_API_MOBILE_OS}
 
-baseUrl: http://localhost:8080
-REST_API_KEY: e7f1efe776e2eb746c7e64038e45141b
-REDIRECT_URL: ${baseUrl}/view/home
-
 jwt:
   key: projectKey-which-is-longer-than-32bits-complete
-  access_token_expiration: 86400000 # 1일
+  access_token_expiration: 604800000 # 7일
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:mysql://localhost:3306/tripmate
+    username: tripmate
+    password: tripmate
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: ${MYSQL_DB_URL_DEV}
+    username: ${MYSQL_DB_USERNAME_DEV}
+    password: ${MYSQL_DB_PASSWORD_DEV}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: ${MYSQL_DB_URL_PROD}
+    username: ${MYSQL_DB_USERNAME_PROD}
+    password: ${MYSQL_DB_PASSWORD_PROD}
+  jpa:
+    hibernate:
+      ddl-auto: update
