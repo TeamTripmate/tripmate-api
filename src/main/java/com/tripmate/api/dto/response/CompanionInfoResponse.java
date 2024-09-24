@@ -18,6 +18,12 @@ public record CompanionInfoResponse(
     boolean accompanyYn,
     String chatLink,
     String description,
+
+    @Schema(description = "성별", example = "남자")
+    String gender,
+    @Schema(description = "나이대", example = "20대")
+    String ageRange,
+
     @Schema(description = "호스트 정보")
     HostInfo hostInfo,
 
@@ -28,12 +34,13 @@ public record CompanionInfoResponse(
     List<String> reviewRanks
 ) {
 
-    public static CompanionInfoResponse toResponse(CompanionEntity entity, HostInfo hostInfo, List<ReviewInfo> reviewInfos, List<String> reviewRanks) {
+    public static CompanionInfoResponse toResponse(CompanionEntity entity, HostInfo hostInfo, List<ReviewInfo> reviewInfos, List<String> reviewRanks, String gender, String ageRange) {
+
         return CompanionInfoResponse.builder()
             .title(entity.getTitle())
             .spotId(entity.getSpotId().toString())  // Long을 String으로 변환
             .date(entity.getStartDate())  // LocalDateTime 사용
-            // TODO : 유형 정보 enum 필요
+            // TODO : 유형 정보 enum 필요.. companionType 이거 유형 왜 있냐...
             .accompanyYn("ACCOMPANY".equals(entity.getCompanionType()))  // 동행 여부를 boolean으로 변환
             .chatLink(entity.getOpenChatLink())
             .description(entity.getDescription())

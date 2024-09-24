@@ -1,13 +1,21 @@
 package com.tripmate.api.login;
 
+import com.tripmate.api.dto.request.WithdrawalRequest;
+import com.tripmate.api.dto.response.MypageUserInfoResponse;
+import com.tripmate.api.dto.response.TripmateApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +30,7 @@ public class LoginController {
 
     private final KakaoLoginService kakaoLoginService;
 
-    @GetMapping("/oauth/check")
+//    @GetMapping("/oauth/check")
     public ResponseEntity<?> kakaoLoginGet(@RequestParam("code") String code) {
 
         String token = kakaoLoginService.getAccessTokenFromKakao(code);
@@ -50,5 +58,34 @@ public class LoginController {
         headers.add("Authorization", "Bearer " + token);
 
         return ResponseEntity.status(HttpStatus.CREATED).headers(headers).build();
+    }
+
+    @Operation(
+        summary = "회원탈퇴 API",
+        description = ""
+    )
+    @PostMapping("/user/withdrawal")
+    public ResponseEntity<Void> userWithdrawal(@Valid @RequestBody WithdrawalRequest withdrawalRequest) {
+
+        kakaoLoginService.doWithdrawal(withdrawalRequest.id());
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @Operation(
+        summary = "마이페이지 - 유저 정보 확인 API"
+    )
+    @GetMapping("user/{userId}")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<TripmateApiResponse<MypageUserInfoResponse>> getUserInfo(@PathVariable("userId") Long userId) {
+
+        kakaoLoginService.getMypageUserInfo(userId);
+
+        String[] array = {"맛집탐험형", "액티비티형", "쇼핑형"};
+        List<String> keywordList = new ArrayList<>(Arrays.asList(array));
+
+        return ResponseEntity.ok(TripmateApiResponse.success(
+            new MypageUserInfoResponse(keywordList,"PENGUIN","여행가 아기꿀벌","카닉","이미지썸네일URL", "이미지URL")
+        ));
     }
 }

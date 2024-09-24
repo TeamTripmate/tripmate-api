@@ -18,6 +18,7 @@ public class TourApiService {
         queryParams.add("mapX", longitude);
         queryParams.add("mapY", latitude);
         queryParams.add("radius", range);
+        queryParams.add("numOfRows", "20");
 
         ResponseEntity<LocationBasedSpotApiResponse> response = tourApiRestClient.get(
                 TourApiRequestPath.LOCATION_BASED_SPOT.getPath(),

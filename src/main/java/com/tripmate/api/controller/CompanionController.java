@@ -3,6 +3,7 @@ package com.tripmate.api.controller;
 import com.tripmate.api.dto.request.CompanionApplyRequest;
 import com.tripmate.api.dto.request.CollectCompanionRequest;
 import com.tripmate.api.dto.request.CompanionReviewRequest;
+import com.tripmate.api.dto.response.CollectCompanionResponse;
 import com.tripmate.api.dto.response.CompanionInfoResponse;
 import com.tripmate.api.dto.response.TripmateApiResponse;
 import com.tripmate.api.service.CompanionService;
@@ -11,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,11 +32,10 @@ public class CompanionController {
         description = ""
     )
     @PostMapping("")
-    public ResponseEntity<Void> collectCompanion(@Valid @RequestBody CollectCompanionRequest collectCompanionRequest) {
+    public ResponseEntity<TripmateApiResponse<CollectCompanionResponse>> collectCompanion(@Valid @RequestBody CollectCompanionRequest collectCompanionRequest) {
 
-        companionService.saveCompanionInfo(collectCompanionRequest);
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        CollectCompanionResponse collectCompanionResponse = companionService.saveCompanionInfo(collectCompanionRequest);
+        return ResponseEntity.ok(TripmateApiResponse.success(collectCompanionResponse));
     }
 
     @Operation(
@@ -55,8 +56,8 @@ public class CompanionController {
         description = ""
     )
     @PostMapping("/review")
-    public ResponseEntity<Void> createCompanionReview(@Valid @RequestBody CompanionReviewRequest companionReviewRequest) {
-
+    public ResponseEntity<Void> createCompanionReview(@AuthenticationPrincipal Long userId, @Valid @RequestBody CompanionReviewRequest companionReviewRequest) {
+        companionService.saveCompanionReview(userId, companionReviewRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
      }
 
