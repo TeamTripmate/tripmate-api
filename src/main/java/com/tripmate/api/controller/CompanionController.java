@@ -3,6 +3,7 @@ package com.tripmate.api.controller;
 import com.tripmate.api.dto.request.CompanionApplyRequest;
 import com.tripmate.api.dto.request.CollectCompanionRequest;
 import com.tripmate.api.dto.request.CompanionReviewRequest;
+import com.tripmate.api.dto.response.CollectCompanionResponse;
 import com.tripmate.api.dto.response.CompanionInfoResponse;
 import com.tripmate.api.dto.response.TripmateApiResponse;
 import com.tripmate.api.service.CompanionService;
@@ -31,11 +32,10 @@ public class CompanionController {
         description = ""
     )
     @PostMapping("")
-    public ResponseEntity<Void> collectCompanion(@Valid @RequestBody CollectCompanionRequest collectCompanionRequest) {
+    public ResponseEntity<TripmateApiResponse<CollectCompanionResponse>> collectCompanion(@Valid @RequestBody CollectCompanionRequest collectCompanionRequest) {
 
-        companionService.saveCompanionInfo(collectCompanionRequest);
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        CollectCompanionResponse collectCompanionResponse = companionService.saveCompanionInfo(collectCompanionRequest);
+        return ResponseEntity.ok(TripmateApiResponse.success(collectCompanionResponse));
     }
 
     @Operation(

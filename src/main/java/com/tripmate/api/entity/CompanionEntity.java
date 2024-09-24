@@ -36,7 +36,12 @@ public class CompanionEntity {
     private String companionType;  // 동행 유형
     @NotNull
     private String openChatLink;  // 오픈채팅 링크
+
     @NotNull
     private Long hostId;  // 호스트 ID
+    @NotNull
+    private boolean sameAgeYn;
+    @NotNull
+    private boolean sameGenderYn;
 
 }
