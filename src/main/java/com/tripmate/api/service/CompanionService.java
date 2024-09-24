@@ -1,22 +1,29 @@
 package com.tripmate.api.service;
 
 import com.tripmate.api.dto.request.CollectCompanionRequest;
+import com.tripmate.api.dto.request.CompanionReviewRequest;
 import com.tripmate.api.dto.response.CompanionInfoResponse;
 import com.tripmate.api.entity.CompanionEntity;
 import com.tripmate.api.entity.CompanionRepository;
+import com.tripmate.api.entity.CompanionReviewEntity;
+import com.tripmate.api.entity.CompanionReviewRepository;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class CompanionService {
 
     private final ModelMapper modelMapper;
     private final CompanionRepository companionRepository;
+    private final CompanionReviewRepository companionReviewRepository;
 
     public CompanionInfoResponse getCompanionInfo(Long companionId) {
         Optional<CompanionEntity> companion = companionRepository.findById(companionId);
@@ -49,6 +56,36 @@ public class CompanionService {
 //        CompanionEntity companionEntity = modelMapper.map(collectCompanionRequest, CompanionEntity.class);
 
         companionRepository.save(companionEntity);
+    }
+
+    /**
+     * 동행 리뷰 저장 메서드
+     * @param userId
+     * @param companionReviewRequest
+     */
+    public void saveCompanionReview(Long userId, CompanionReviewRequest companionReviewRequest) {
+
+        Long companionId = companionReviewRequest.companionId();
+        List<String> likeList = companionReviewRequest.likeList();
+        List<String> badList = companionReviewRequest.badList();
+
+        for (String like : likeList) {
+            CompanionReviewEntity cre = CompanionReviewEntity.builder()
+                .companionId(companionId)
+                .userId(userId)
+                .feedback(like)
+                .isPositive(true).build();
+            companionReviewRepository.save(cre);
+        }
+
+        for (String bad : badList) {
+            CompanionReviewEntity cre = CompanionReviewEntity.builder()
+                .companionId(companionId)
+                .userId(userId)
+                .feedback(bad)
+                .isPositive(false).build();
+            companionReviewRepository.save(cre);
+        }
     }
 
 }
