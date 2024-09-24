@@ -11,7 +11,7 @@ public record MypageUserInfoResponse(
     List<String> selectedKeyword,
 
     @Schema(description = "캐릭터 id")
-    Long characterId,
+    String characterId,
 
     @Schema(description = "여행 스타일")
     String tripStyle
