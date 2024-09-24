@@ -50,7 +50,6 @@ public class CompanionService {
             .sameAgeYn(collectCompanionRequest.sameAgeYn())
             .build();
 
-        //
 //        modelMapper.typeMap(
 //                CollectCompanionRequest.class, CompanionEntity.class)
 //            .addMappings(mapper -> {
