@@ -21,15 +21,17 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Service
 public class KakaoLoginService {
 
-
-    @Value("${REST_API_KEY}")
+    @Value("${KAKAO_REST_API_KEY}")
     private String clientId;
+
     @Value("${spring.security.oauth2.client.provider.kakao.token-uri}")
     private String KAUTH_TOKEN_URL_HOST;
+
     @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
     private String REDIRECT_URI;
 
     private final UserRepository userRepository;
+
     private final JwtTokenProvider jwtTokenProvider;
 
     /**

@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/view")
 public class ViewLoginController {
 
-    @Value("${REST_API_KEY}")
+    @Value("${KAKAO_REST_API_KEY}")
     private String clientId;
+
     @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
     private String redirectUri;
 
@@ -26,5 +27,4 @@ public class ViewLoginController {
     public String home() {
         return "home";
     }
-
 }
