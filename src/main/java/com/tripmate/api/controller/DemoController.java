@@ -19,7 +19,9 @@ public class DemoController {
 
     @Operation(
         summary = "데모 엔티티 데이터 생성용 API",
-        description = "user1, user2, 여행스타일, 동행모집, 동행객 엔티티 생성 후, id값들 제공"
+        description = "user1, user2, 여행스타일, 동행모집, 동행객 엔티티 생성 후, id값들 제공  "
+            + "\n user1 : 동행 호스트 (userId1)  "
+            + "\n user2, 3 : 동행 신청자 (userId2, userId3)"
     )
     @PostMapping("/")
     public ResponseEntity<TripmateApiResponse<Map<String, Long>>> entitySettings() {
