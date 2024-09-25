@@ -1,6 +1,7 @@
 package com.tripmate.api.controller;
 
 import com.tripmate.api.dto.response.MyApplyCompanionListResponse;
+import com.tripmate.api.dto.response.MyCollectCompanionListResponse;
 import com.tripmate.api.dto.response.TripmateApiResponse;
 import com.tripmate.api.service.TripListService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,6 +23,7 @@ public class TripListController {
     private final TripListService tripListService;
 
     @Operation(
+        summary = "신청한 동행 목록 API",
         description = ""
     )
     @GetMapping("/apply/companions/{userId}")
@@ -31,5 +33,18 @@ public class TripListController {
         List<MyApplyCompanionListResponse> myAppliedCompanionList = tripListService.getMyAppliedCompanionList(userId);
 
         return ResponseEntity.ok(TripmateApiResponse.success(myAppliedCompanionList));
+    }
+
+    @Operation(
+        summary = "작성한 동행 목록 API",
+        description = ""
+    )
+    @GetMapping("/collect/companions/{userId}")
+    public ResponseEntity<TripmateApiResponse<List<MyCollectCompanionListResponse>>> getCollectCompanions(
+        @PathVariable("userId") Long userId) {
+
+        List<MyCollectCompanionListResponse> myCollectCompanionList = tripListService.getMyCollectCompanionList(userId);
+
+        return ResponseEntity.ok(TripmateApiResponse.success(myCollectCompanionList));
     }
 }

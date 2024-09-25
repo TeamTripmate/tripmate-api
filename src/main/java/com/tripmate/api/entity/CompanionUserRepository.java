@@ -1,5 +1,6 @@
 package com.tripmate.api.entity;
 
+import com.tripmate.api.dto.tripList.ApplicantPropertyInfo;
 import com.tripmate.api.dto.tripList.MyApplyCompanionListInfo;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,5 +20,14 @@ public interface CompanionUserRepository extends JpaRepository<CompanionUserEnti
             + "JOIN TripStyleEntity tse ON tse.id = ue.tripStyleId "
             + "WHERE cue.userId = :userId")
     List<MyApplyCompanionListInfo> joinCompanionUserEntityAndCompanionEntity(Long userId);
+
+    @Query(
+        "select new com.tripmate.api.dto.tripList.ApplicantPropertyInfo(ue.kakaoId, tse.keyword1, tse.keyword2, tse.keyword3, tse.styleName, ue.characterType) "
+            + "from CompanionUserEntity cue "
+            + "JOIN UserEntity ue ON cue.userId = ue.kakaoId "
+            + "JOIN TripStyleEntity tse ON tse.id = ue.tripStyleId "
+            + "WHERE cue.companionId = :companionId"
+    )
+    List<ApplicantPropertyInfo> joinCompanionUserEntityAndUserEntity(Long companionId);
 
 }

@@ -61,7 +61,7 @@ public class DemoService {
             .thumbnailImage("https://example.com/walker_thumbnail.jpg")  // 썸네일 이미지
             .gender("여성")  // 성별
             .birthYear("1985")  // 출생년도
-            .tripStyleId(2L)  // 여행 스타일 ID
+            .tripStyleId(tse.getId())  // 여행 스타일 ID
             .characterType(TripmateCharacterType.PANDA.name())  // 캐릭터 유형
             .deleted(true)  // 삭제 여부 (탈퇴된 사용자로 가정)
             .build();

@@ -2,7 +2,12 @@ package com.tripmate.api.service;
 
 import com.tripmate.api.dto.response.MyApplyCompanionListResponse;
 import com.tripmate.api.dto.response.MyApplyCompanionListResponse.TripHostInfo;
+import com.tripmate.api.dto.response.MyCollectCompanionListResponse;
+import com.tripmate.api.dto.response.MyCollectCompanionListResponse.ApplicantInfo;
+import com.tripmate.api.dto.tripList.ApplicantPropertyInfo;
 import com.tripmate.api.dto.tripList.MyApplyCompanionListInfo;
+import com.tripmate.api.entity.CompanionEntity;
+import com.tripmate.api.entity.CompanionRepository;
 import com.tripmate.api.entity.CompanionUserRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class TripListService {
 
-    private final CompanionUserRepository companionUserRepository;
     private final ModelMapper modelMapper;
+    private final CompanionUserRepository companionUserRepository;
+    private final CompanionRepository companionRepository;
 
     public List<MyApplyCompanionListResponse> getMyAppliedCompanionList(Long userId) {
 
@@ -47,6 +53,37 @@ public class TripListService {
         }
 
         return responses;
+    }
+
+    public List<MyCollectCompanionListResponse> getMyCollectCompanionList(Long userId) {
+
+        List<MyCollectCompanionListResponse> responses = new ArrayList<>();
+
+        List<CompanionEntity> companionEntities = companionRepository.findCompanionEntitiesByHostId(userId);
+        for (CompanionEntity companion : companionEntities) {
+
+            Long companionId = companion.getId();
+            List<ApplicantPropertyInfo> propertyInfos = companionUserRepository.joinCompanionUserEntityAndUserEntity(
+                companionId);
+            List<ApplicantInfo> applicantInfoList = new ArrayList<>();
+            for (ApplicantPropertyInfo propertyInfo : propertyInfos) {
+                ApplicantInfo applicantInfo = propertyInfo.getApplicantInfoBuild();
+                applicantInfoList.add(applicantInfo);
+            }
+
+            MyCollectCompanionListResponse response = MyCollectCompanionListResponse.builder()
+                .companionId(companion.getId())
+                .title(companion.getTitle())
+                .date(companion.getStartDate())
+                .companionStatus(companion.getCompanionStatus())
+                .applicantInfo(applicantInfoList)
+                .build();
+
+            responses.add(response);
+        }
+
+        return responses;
+
     }
 
 }
