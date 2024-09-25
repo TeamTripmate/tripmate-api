@@ -36,6 +36,7 @@ public class ApplicantPropertyInfo {
 
     public ApplicantInfo getApplicantInfoBuild() {
         return ApplicantInfo.builder()
+            .userId(this.userId)
             .tripStyle(this.tripStyle)
             .characterId(this.characterId)
             .selectedKeyword(getKeywordList()).build();
