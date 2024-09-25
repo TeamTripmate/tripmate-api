@@ -1,8 +1,11 @@
 package com.tripmate.api.login;
 
+import com.tripmate.api.domain.user.TripmateCharacterType;
+import com.tripmate.api.dto.request.TripmatePersonalizedTestRequest;
 import com.tripmate.api.dto.request.WithdrawalRequest;
 import com.tripmate.api.dto.response.MypageUserInfoResponse;
 import com.tripmate.api.dto.response.TripmateApiResponse;
+import com.tripmate.api.dto.response.TripmatePersonalizedTestResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -86,6 +89,21 @@ public class LoginController {
 
         return ResponseEntity.ok(TripmateApiResponse.success(
             new MypageUserInfoResponse(keywordList,"PENGUIN","여행가 아기꿀벌","카닉","이미지썸네일URL", "이미지URL")
+        ));
+    }
+
+    @Operation(
+            summary = "Tripmate 개인화 설문(여행 스타일 및 호구조사) API"
+    )
+    @PostMapping("user/{userId}/personalized-tests")
+    public ResponseEntity<TripmateApiResponse<TripmatePersonalizedTestResponse>> submitPersonalizedTest(
+            @PathVariable("userId") Long userId,
+            @Valid @RequestBody TripmatePersonalizedTestRequest tripmatePersonalizedTestRequest
+    ) {
+        String mbti = tripmatePersonalizedTestRequest.mbti();
+        TripmateCharacterType characterType = TripmateCharacterType.fromMBTI(mbti);
+        return ResponseEntity.ok(TripmateApiResponse.success(
+                new TripmatePersonalizedTestResponse(characterType)
         ));
     }
 }
