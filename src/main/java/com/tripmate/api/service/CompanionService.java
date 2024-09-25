@@ -41,17 +41,19 @@ public class CompanionService {
 
         // TODO : 테스트 데이터 제거 후 비지니스 로직 생성 필요
         HostInfo hostInfoTest = new HostInfo(
-            "https://example.com/profile-image.jpg",  // 프로필 이미지 URL
-            "JohnDoe",  // 카카오 닉네임
-            "모험가",  // 캐릭터 이름
-            Arrays.asList("자유여행", "모험", "즉흥"),  // 여행 스타일 키워드 목록
-            85  // 매칭 비율 (예: 85%)
+            "https://example.com/profile-image.jpg",
+            "JohnDoe",
+            "아기 펭귄",
+            "PENGUIN",
+            Arrays.asList("자유여행", "모험", "즉흥"),
+            85
         );
 
         UserInfo userInfo1 = new UserInfo(
-            "https://example.com/user-profile.jpg",  // 작성자 프로필 이미지 URL
-            "JaneDoe",  // 작성자 카카오 닉네임
-            "PENGUIN"  // 작성자 캐릭터 이름
+            "https://example.com/user-profile.jpg",
+            "JaneDoe",
+            "아기 펭귄",
+            "PENGUIN"
         );
 
         // ReviewInfo 객체 생성 (리뷰 정보)
@@ -63,9 +65,10 @@ public class CompanionService {
         );
 
         UserInfo userInfo2 = new UserInfo(
-            "https://example.com/user-profile.jpg",  // 작성자 프로필 이미지 URL
-            "JaneDoe",  // 작성자 카카오 닉네임
-            "PENGUIN"  // 작성자 캐릭터 이름
+            "https://example.com/user-profile.jpg",
+            "JaneDoe",
+            "아기 펭귄",
+            "PENGUIN"
         );
 
         // ReviewInfo 객체 생성 (리뷰 정보)
