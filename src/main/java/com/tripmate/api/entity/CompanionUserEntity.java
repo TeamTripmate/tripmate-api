@@ -30,4 +30,8 @@ public class CompanionUserEntity {
     @NotNull
     private boolean reviewYn;  // 후기작성여부
 
+    public void changeMatchingStatus(String status) {
+        this.matchingStatus = status;
+    }
+
 }

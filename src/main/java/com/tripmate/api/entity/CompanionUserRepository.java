@@ -3,6 +3,7 @@ package com.tripmate.api.entity;
 import com.tripmate.api.dto.tripList.ApplicantPropertyInfo;
 import com.tripmate.api.dto.tripList.MyApplyCompanionListInfo;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -29,5 +30,9 @@ public interface CompanionUserRepository extends JpaRepository<CompanionUserEnti
             + "WHERE cue.companionId = :companionId"
     )
     List<ApplicantPropertyInfo> joinCompanionUserEntityAndUserEntity(Long companionId);
+
+    Optional<CompanionUserEntity> findCompanionUserEntityByCompanionIdAndUserId(Long companionId, Long userId);
+
+    List<CompanionUserEntity> findCompanionUserEntitiesByCompanionId(Long companionId);
 
 }

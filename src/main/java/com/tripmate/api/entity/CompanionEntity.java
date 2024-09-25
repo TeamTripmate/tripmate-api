@@ -46,4 +46,8 @@ public class CompanionEntity {
     @NotNull
     private boolean sameGenderYn;
 
+    public void changeStatus(String status) {
+        this.companionStatus = status;
+    }
+
 }
