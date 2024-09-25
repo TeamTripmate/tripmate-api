@@ -95,7 +95,7 @@ public class LoginController {
     @Operation(
             summary = "Tripmate 개인화 설문(여행 스타일 및 호구조사) API"
     )
-    @PostMapping("user/{userId}/personalized-tests")
+    @PostMapping("users/{userId}/personalized-tests")
     public ResponseEntity<TripmateApiResponse<TripmatePersonalizedTestResponse>> submitPersonalizedTest(
             @PathVariable("userId") Long userId,
             @Valid @RequestBody TripmatePersonalizedTestRequest tripmatePersonalizedTestRequest
