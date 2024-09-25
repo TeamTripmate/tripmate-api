@@ -1,6 +1,7 @@
 package com.tripmate.api.dto.response;
 
 import com.tripmate.api.domain.spot.Location;
+import com.tripmate.api.domain.spot.SpotType;
 import com.tripmate.api.domain.user.TripmateCharacter;
 import com.tripmate.api.dto.companion.CompanionRecruitInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,6 +17,9 @@ public record SpotDetailResponse(
 
         @Schema(description = "여행지 상세 설명")
         String description,
+
+        @Schema(description = "여행지 타입")
+        SpotType spotType,
 
         @Schema(description = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5rt0xywjqOvvUPnKPIfSOkd5_RnWQ0vLhjQ&s")
         String imageUrl,
