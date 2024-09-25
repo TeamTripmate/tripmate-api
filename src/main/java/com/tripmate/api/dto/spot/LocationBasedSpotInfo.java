@@ -46,8 +46,8 @@ public record LocationBasedSpotInfo(
                 .distance(from.dist())
                 .thumbnailUrl(from.firstImage2())
                 .location(new Location(
-                        from.mapX(),
                         from.mapY(),
+                        from.mapX(),
                         new Address(from.addr1(), from.addr2())
                 ))
                 .spotType(SpotType.LEISURE_SPORTS)
