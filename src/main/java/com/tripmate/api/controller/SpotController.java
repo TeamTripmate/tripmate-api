@@ -2,6 +2,7 @@ package com.tripmate.api.controller;
 
 import com.tripmate.api.domain.spot.Address;
 import com.tripmate.api.domain.spot.Location;
+import com.tripmate.api.domain.spot.SpotType;
 import com.tripmate.api.domain.user.TripmateCharacter;
 import com.tripmate.api.domain.user.TripmateCharacterType;
 import com.tripmate.api.dto.companion.CompanionRecruitInfo;
@@ -67,6 +68,7 @@ public class SpotController {
                                 spotId,
                                 "서핑 체험",
                                 "Quae eius ea nihil quasi mollitia consectetur natus repudiandae aut. Sit maiores minus asperiores illum rem. Sunt commodi aliquam ipsam quas aliquam minima.",
+                                SpotType.EXPERIENCE,
                                 "https://dimg.donga.com/wps/NEWS/IMAGE/2021/07/16/107979650.1.jpg",
                                 "010-0000-0000",
                                 new Location(
