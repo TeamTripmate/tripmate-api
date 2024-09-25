@@ -18,13 +18,16 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import java.util.Arrays;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Arrays;
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -88,6 +91,7 @@ public class SpotController {
                                                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq5wHDD6sXA3M1EhvtDL6MC38-6G27SiCg7g&s",
                                                         "나는야고윤정",
                                                         "인스타 인플루언서 아기 펭귄",
+                                                    "PENGUIN",
                                                         Arrays.asList("맛집탐험형", "액티비티형", "쇼핑형"),
                                                         70
                                                 ),
@@ -101,6 +105,7 @@ public class SpotController {
                                                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq5wHDD6sXA3M1EhvtDL6MC38-6G27SiCg7g&s",
                                                         "춤추는 심바",
                                                         "쇼핑을 즐기는 비버",
+                                                    "PENGUIN",
                                                         Arrays.asList("맛집탐험형", "액티비티형", "쇼핑형"),
                                                         70
                                                 ),
