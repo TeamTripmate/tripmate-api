@@ -2,8 +2,11 @@ package com.tripmate.api.controller;
 
 import com.tripmate.api.domain.spot.Address;
 import com.tripmate.api.domain.spot.Location;
+import com.tripmate.api.domain.spot.SpotType;
 import com.tripmate.api.domain.user.TripmateCharacter;
 import com.tripmate.api.domain.user.TripmateCharacterType;
+import com.tripmate.api.dto.companion.CompanionRecruitInfo;
+import com.tripmate.api.dto.companion.HostInfo;
 import com.tripmate.api.dto.request.LocationBasedSpotSearchRequest;
 import com.tripmate.api.dto.response.LocationBasedSpotListResponse;
 import com.tripmate.api.dto.response.SpotDetailResponse;
@@ -20,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -64,17 +68,46 @@ public class SpotController {
                                 spotId,
                                 "서핑 체험",
                                 "Quae eius ea nihil quasi mollitia consectetur natus repudiandae aut. Sit maiores minus asperiores illum rem. Sunt commodi aliquam ipsam quas aliquam minima.",
+                                SpotType.EXPERIENCE,
                                 "https://dimg.donga.com/wps/NEWS/IMAGE/2021/07/16/107979650.1.jpg",
                                 "010-0000-0000",
                                 new Location(
                                         "37.7563022",
                                         "128.922632",
-                                        new Address( "강원 양양군 현북면 하조대해안길 119", "")
+                                        new Address("강원 양양군 현북면 하조대해안길 119", "")
                                 ),
                                 List.of(
-                                        new TripmateCharacter("인스타 모험자", TripmateCharacterType.DOLPHIN),
-                                        new TripmateCharacter("랜드마크 탐험가", TripmateCharacterType.PENGUIN),
-                                        new TripmateCharacter("인생샷 찍는 인스타 인플루언서", TripmateCharacterType.HONEYBEE)
+                                        new TripmateCharacter("인스타 모험자 아기 돌고래", TripmateCharacterType.DOLPHIN),
+                                        new TripmateCharacter("랜드마크 탐험가 아기 펭귄", TripmateCharacterType.PENGUIN),
+                                        new TripmateCharacter("인생샷 찍는 인스타 인플루언서 꿀벌", TripmateCharacterType.HONEYBEE)
+                                ),
+                                List.of(
+                                        new CompanionRecruitInfo(
+                                                1L,
+                                                new HostInfo(
+                                                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq5wHDD6sXA3M1EhvtDL6MC38-6G27SiCg7g&s",
+                                                        "나는야고윤정",
+                                                        "인스타 인플루언서 아기 펭귄",
+                                                        Arrays.asList("맛집탐험형", "액티비티형", "쇼핑형"),
+                                                        70
+                                                ),
+                                                "서피비치 인근에서 같이 식사할 사람 구해요!",
+                                                "여자",
+                                                "20대"
+                                        ),
+                                        new CompanionRecruitInfo(
+                                                2L,
+                                                new HostInfo(
+                                                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq5wHDD6sXA3M1EhvtDL6MC38-6G27SiCg7g&s",
+                                                        "춤추는 심바",
+                                                        "쇼핑을 즐기는 비버",
+                                                        Arrays.asList("맛집탐험형", "액티비티형", "쇼핑형"),
+                                                        70
+                                                ),
+                                                "서피비치 인근에서 같이 식사할 사람 구해요!",
+                                                "여자",
+                                                "30대"
+                                        )
                                 )
                         )
                 )

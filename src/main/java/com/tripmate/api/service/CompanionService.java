@@ -1,5 +1,6 @@
 package com.tripmate.api.service;
 
+import com.tripmate.api.domain.CompanionStatus;
 import com.tripmate.api.dto.request.CollectCompanionRequest;
 import com.tripmate.api.dto.request.CompanionReviewRequest;
 import com.tripmate.api.dto.response.CollectCompanionResponse;
@@ -44,13 +45,13 @@ public class CompanionService {
             .description(collectCompanionRequest.description())
             .startDate(collectCompanionRequest.date())
             .companionType(collectCompanionRequest.type())
+            .companionStatus(CompanionStatus.RECRUITING.name())
             .openChatLink(collectCompanionRequest.openChatLink())
             .hostId(collectCompanionRequest.creatorId())
             .sameGenderYn(collectCompanionRequest.sameGenderYn())
             .sameAgeYn(collectCompanionRequest.sameAgeYn())
             .build();
 
-        //
 //        modelMapper.typeMap(
 //                CollectCompanionRequest.class, CompanionEntity.class)
 //            .addMappings(mapper -> {

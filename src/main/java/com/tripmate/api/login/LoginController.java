@@ -1,10 +1,17 @@
 package com.tripmate.api.login;
 
+import com.tripmate.api.domain.user.TripmateCharacterType;
+import com.tripmate.api.dto.request.TripmatePersonalizedTestRequest;
 import com.tripmate.api.dto.request.WithdrawalRequest;
 import com.tripmate.api.dto.response.MypageUserInfoResponse;
 import com.tripmate.api.dto.response.TripmateApiResponse;
+import com.tripmate.api.dto.response.TripmatePersonalizedTestResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -72,10 +79,31 @@ public class LoginController {
         summary = "마이페이지 - 유저 정보 확인 API"
     )
     @GetMapping("user/{userId}")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<TripmateApiResponse<MypageUserInfoResponse>> getUserInfo(@PathVariable("userId") Long userId) {
 
         kakaoLoginService.getMypageUserInfo(userId);
 
-        return null;
+        String[] array = {"맛집탐험형", "액티비티형", "쇼핑형"};
+        List<String> keywordList = new ArrayList<>(Arrays.asList(array));
+
+        return ResponseEntity.ok(TripmateApiResponse.success(
+            new MypageUserInfoResponse(keywordList,"PENGUIN","여행가 아기꿀벌","카닉","이미지썸네일URL", "이미지URL")
+        ));
+    }
+
+    @Operation(
+            summary = "Tripmate 개인화 설문(여행 스타일 및 호구조사) API"
+    )
+    @PostMapping("user/{userId}/personalized-tests")
+    public ResponseEntity<TripmateApiResponse<TripmatePersonalizedTestResponse>> submitPersonalizedTest(
+            @PathVariable("userId") Long userId,
+            @Valid @RequestBody TripmatePersonalizedTestRequest tripmatePersonalizedTestRequest
+    ) {
+        String mbti = tripmatePersonalizedTestRequest.mbti();
+        TripmateCharacterType characterType = TripmateCharacterType.fromMBTI(mbti);
+        return ResponseEntity.ok(TripmateApiResponse.success(
+                new TripmatePersonalizedTestResponse(characterType)
+        ));
     }
 }
