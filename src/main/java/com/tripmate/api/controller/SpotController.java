@@ -84,8 +84,8 @@ public class SpotController {
                                                 1L,
                                                 new HostInfo(
                                                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq5wHDD6sXA3M1EhvtDL6MC38-6G27SiCg7g&s",
-                                                        "",
-                                                        "",
+                                                        "나는야고윤정",
+                                                        "인스타 인플루언서 아기 펭귄",
                                                         Arrays.asList("맛집탐험형", "액티비티형", "쇼핑형"),
                                                         70
                                                 ),

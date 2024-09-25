@@ -26,6 +26,11 @@ public class UserEntity {
     @NotNull
     private String thumbnailImage;
 
+    private String gender;
+    private String birthYear;
+    private Long tripStyleId;
+    private String characterType;
+
     @ColumnDefault("false")
     private boolean deleted;
 

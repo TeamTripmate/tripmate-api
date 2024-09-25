@@ -35,6 +35,8 @@ public class CompanionEntity {
     @NotNull
     private String companionType;  // 동행 유형
     @NotNull
+    private String companionStatus; // 동행 모집 상태
+    @NotNull
     private String openChatLink;  // 오픈채팅 링크
 
     @NotNull
