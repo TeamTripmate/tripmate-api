@@ -1,6 +1,7 @@
 package com.tripmate.api.login;
 
 
+import com.tripmate.api.dto.response.MypageUserInfoResponse;
 import com.tripmate.api.entity.UserEntity;
 import com.tripmate.api.entity.UserRepository;
 import java.util.NoSuchElementException;
@@ -167,7 +168,7 @@ public class KakaoLoginService {
     /**
      * 마이페이지 유저 정보 가져오는 메서드
      */
-    public void getMypageUserInfo(Long userId) {
-
+    public MypageUserInfoResponse getMypageUserInfo(Long userId) {
+        return userRepository.joinUserEntityAndTripStyleEntity(userId);
     }
 }

@@ -1,6 +1,7 @@
 package com.tripmate.api.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Arrays;
 import java.util.List;
 import lombok.Builder;
 
@@ -22,4 +23,10 @@ public record MypageUserInfoResponse(
 
 ) {
 
+    public MypageUserInfoResponse(String keyword1, String keyword2, String keyword3, String characterId,
+        String tripStyle, String nickname,
+        String thumbnailImageUrl, String profileImageUrl) {
+        this(Arrays.asList(keyword1, keyword2, keyword3), characterId, tripStyle, nickname, thumbnailImageUrl,
+            profileImageUrl);
+    }
 }
