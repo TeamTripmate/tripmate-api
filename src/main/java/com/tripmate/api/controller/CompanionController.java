@@ -1,7 +1,7 @@
 package com.tripmate.api.controller;
 
-import com.tripmate.api.dto.request.CompanionApplyRequest;
 import com.tripmate.api.dto.request.CollectCompanionRequest;
+import com.tripmate.api.dto.request.CompanionApplyRequest;
 import com.tripmate.api.dto.request.CompanionReviewRequest;
 import com.tripmate.api.dto.response.CollectCompanionResponse;
 import com.tripmate.api.dto.response.CompanionInfoResponse;
@@ -67,7 +67,7 @@ public class CompanionController {
     )
     @PostMapping("/apply")
     public ResponseEntity<Void> createCompanionApply(@Valid @RequestBody CompanionApplyRequest companionApplyRequest) {
-
+        companionService.saveCompanionApply(companionApplyRequest.companionId(), companionApplyRequest.userId());
         return ResponseEntity.status(HttpStatus.CREATED).build();
      }
 

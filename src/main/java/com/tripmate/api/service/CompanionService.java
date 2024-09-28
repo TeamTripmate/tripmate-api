@@ -1,6 +1,7 @@
 package com.tripmate.api.service;
 
 import com.tripmate.api.domain.CompanionStatus;
+import com.tripmate.api.domain.MatchingStatus;
 import com.tripmate.api.dto.companion.HostInfo;
 import com.tripmate.api.dto.companion.ReviewInfo;
 import com.tripmate.api.dto.companion.UserInfo;
@@ -12,6 +13,8 @@ import com.tripmate.api.entity.CompanionEntity;
 import com.tripmate.api.entity.CompanionRepository;
 import com.tripmate.api.entity.CompanionReviewEntity;
 import com.tripmate.api.entity.CompanionReviewRepository;
+import com.tripmate.api.entity.CompanionUserEntity;
+import com.tripmate.api.entity.CompanionUserRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,6 +34,7 @@ public class CompanionService {
     private final ModelMapper modelMapper;
     private final CompanionRepository companionRepository;
     private final CompanionReviewRepository companionReviewRepository;
+    private final CompanionUserRepository companionUserRepository;
 
     public CompanionInfoResponse getCompanionInfo(Long companionId) {
         Optional<CompanionEntity> companion = companionRepository.findById(companionId);
@@ -149,6 +153,18 @@ public class CompanionService {
                 .isPositive(false).build();
             companionReviewRepository.save(cre);
         }
+    }
+
+    public void saveCompanionApply(Long companionId, Long userId) {
+
+        CompanionUserEntity companionUserEntity = CompanionUserEntity.builder()
+            .companionId(companionId)
+            .userId(userId)
+            .matchingStatus(MatchingStatus.REQUEST.name())
+            .reviewYn(false)
+            .build();
+
+        companionUserRepository.save(companionUserEntity);
     }
 
 }
