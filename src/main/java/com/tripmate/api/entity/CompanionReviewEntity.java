@@ -16,13 +16,15 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompanionReviewEntity {
+public class CompanionReviewEntity extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
+    private Long reviewerId;
+
+    private Long revieweeId;
 
     private Long companionId;
 

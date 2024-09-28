@@ -80,6 +80,19 @@ public class DemoService {
             .build();
         UserEntity ue3 = userRepository.save(user3);
 
+        UserEntity user4 = UserEntity.builder()
+            .kakaoId(666666666L)  // 카카오 ID
+            .nickname("육육이")  // 닉네임
+            .profileImage("https://example.com/walker_profile666.jpg")  // 프로필 이미지
+            .thumbnailImage("https://example.com/walker_thumbnail666.jpg")  // 썸네일 이미지
+            .gender("남성")  // 성별
+            .birthYear("1989")  // 출생년도
+            .tripStyleId(tse.getId())  // 여행 스타일 ID
+            .characterType(TripmateCharacterType.TURTLE.name())  // 캐릭터 유형
+            .deleted(false)  // 삭제 여부
+            .build();
+        UserEntity ue4 = userRepository.save(user4);
+
         CompanionEntity companion = CompanionEntity.builder()
             .spotId(123L)  // 여행지 ID
             .title("재즈바 가실분")  // 제목
@@ -115,6 +128,7 @@ public class DemoService {
         hashMap.put("userId1", ue1.getKakaoId());
         hashMap.put("userId2", ue2.getKakaoId());
         hashMap.put("userId3", ue3.getKakaoId());
+        hashMap.put("userId4", ue4.getKakaoId());
         hashMap.put("companionId", ce.getId());
         hashMap.put("companionUserId", cue.getId());
         hashMap.put("companionUserId2", cue2.getId());
