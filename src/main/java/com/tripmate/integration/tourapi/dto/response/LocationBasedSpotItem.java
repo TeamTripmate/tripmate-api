@@ -2,6 +2,8 @@ package com.tripmate.integration.tourapi.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.tripmate.integration.tourapi.domain.SpotMediumCategory;
+import com.tripmate.integration.tourapi.domain.SpotSmallCategory;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record LocationBasedSpotItem(
@@ -15,9 +17,9 @@ public record LocationBasedSpotItem(
 
         @JsonProperty("cat1") String cat1,
 
-        @JsonProperty("cat2") String cat2,
+        @JsonProperty("cat2") SpotMediumCategory cat2,
 
-        @JsonProperty("cat3") String cat3,
+        @JsonProperty("cat3") SpotSmallCategory cat3,
 
         @JsonProperty("contentid") Long contentId,
 
