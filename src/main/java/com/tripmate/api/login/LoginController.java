@@ -74,7 +74,7 @@ public class LoginController {
     @Operation(
         summary = "마이페이지 - 유저 정보 확인 API"
     )
-    @GetMapping("user/{userId}")
+    @GetMapping("/user/{userId}")
 //    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<TripmateApiResponse<MypageUserInfoResponse>> getUserInfo(@PathVariable("userId") Long userId) {
 
