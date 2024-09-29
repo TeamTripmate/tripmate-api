@@ -18,7 +18,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompanionEntity {
+public class CompanionEntity extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,5 +45,9 @@ public class CompanionEntity {
     private boolean sameAgeYn;
     @NotNull
     private boolean sameGenderYn;
+
+    public void changeStatus(String status) {
+        this.companionStatus = status;
+    }
 
 }

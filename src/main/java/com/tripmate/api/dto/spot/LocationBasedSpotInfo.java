@@ -4,6 +4,7 @@ import com.tripmate.api.domain.spot.Address;
 import com.tripmate.api.domain.spot.Location;
 import com.tripmate.api.domain.spot.SpotCategory;
 import com.tripmate.api.domain.spot.SpotType;
+import com.tripmate.integration.tourapi.domain.SpotMediumCategory;
 import com.tripmate.integration.tourapi.dto.response.LocationBasedSpotItem;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -39,23 +40,28 @@ public record LocationBasedSpotInfo(
 ) {
 
     public static LocationBasedSpotInfo fromLocationBasedSpotItem(LocationBasedSpotItem from) {
+        SpotMediumCategory mediumCategory = from.cat2();
+        SpotType spotType = SpotType.fromTourApiCategory(mediumCategory);
+
         return LocationBasedSpotInfo.builder()
                 .spotId(from.contentId())
                 .title(from.title())
+                // TODO: 세부 사항 주기
                 .description("Tripmate API에서 지원 예정 내용입니다.")
                 .distance(from.dist())
                 .thumbnailUrl(from.firstImage2())
                 .location(new Location(
-                        from.mapX(),
                         from.mapY(),
+                        from.mapX(),
                         new Address(from.addr1(), from.addr2())
                 ))
-                .spotType(SpotType.LEISURE_SPORTS)
+                .spotType(spotType)
                 .category(new SpotCategory(
                         from.cat1(),
-                        from.cat2(),
-                        from.cat3()
+                        mediumCategory.getCategoryName(),
+                        from.cat3().getCategoryName()
                 ))
+                // TODO: 동행 여부 확인 필요
                 .companionYn(false)
                 .build();
     }

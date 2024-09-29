@@ -14,7 +14,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEntity {
+public class UserEntity extends AbstractEntity {
 
     @Id
     private Long kakaoId;

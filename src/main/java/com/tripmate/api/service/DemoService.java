@@ -61,11 +61,37 @@ public class DemoService {
             .thumbnailImage("https://example.com/walker_thumbnail.jpg")  // 썸네일 이미지
             .gender("여성")  // 성별
             .birthYear("1985")  // 출생년도
-            .tripStyleId(2L)  // 여행 스타일 ID
+            .tripStyleId(tse.getId())  // 여행 스타일 ID
             .characterType(TripmateCharacterType.PANDA.name())  // 캐릭터 유형
-            .deleted(true)  // 삭제 여부 (탈퇴된 사용자로 가정)
+            .deleted(false)  // 삭제 여부
             .build();
         UserEntity ue2 = userRepository.save(user2);
+
+        UserEntity user3 = UserEntity.builder()
+            .kakaoId(777777777L)  // 카카오 ID
+            .nickname("칠칠이")  // 닉네임
+            .profileImage("https://example.com/walker_profile777.jpg")  // 프로필 이미지
+            .thumbnailImage("https://example.com/walker_thumbnail777.jpg")  // 썸네일 이미지
+            .gender("여성")  // 성별
+            .birthYear("1977")  // 출생년도
+            .tripStyleId(tse.getId())  // 여행 스타일 ID
+            .characterType(TripmateCharacterType.HONEYBEE.name())  // 캐릭터 유형
+            .deleted(false)  // 삭제 여부
+            .build();
+        UserEntity ue3 = userRepository.save(user3);
+
+        UserEntity user4 = UserEntity.builder()
+            .kakaoId(666666666L)  // 카카오 ID
+            .nickname("육육이")  // 닉네임
+            .profileImage("https://example.com/walker_profile666.jpg")  // 프로필 이미지
+            .thumbnailImage("https://example.com/walker_thumbnail666.jpg")  // 썸네일 이미지
+            .gender("남성")  // 성별
+            .birthYear("1989")  // 출생년도
+            .tripStyleId(tse.getId())  // 여행 스타일 ID
+            .characterType(TripmateCharacterType.TURTLE.name())  // 캐릭터 유형
+            .deleted(false)  // 삭제 여부
+            .build();
+        UserEntity ue4 = userRepository.save(user4);
 
         CompanionEntity companion = CompanionEntity.builder()
             .spotId(123L)  // 여행지 ID
@@ -89,12 +115,23 @@ public class DemoService {
             .build();
         CompanionUserEntity cue = companionUserRepository.save(companionUser);
 
+        CompanionUserEntity companionUser2 = CompanionUserEntity.builder()
+            .userId(ue3.getKakaoId())  // 회원 ID
+            .companionId(ce.getId())  // 동행 ID
+            .matchingStatus(MatchingStatus.REQUEST.name())  // 매칭 상태
+            .reviewYn(false)  // 후기작성여부
+            .build();
+        CompanionUserEntity cue2 = companionUserRepository.save(companionUser2);
+
         HashMap<String, Long> hashMap = new HashMap<>();
         hashMap.put("tripStyleId", tse.getId());
         hashMap.put("userId1", ue1.getKakaoId());
         hashMap.put("userId2", ue2.getKakaoId());
+        hashMap.put("userId3", ue3.getKakaoId());
+        hashMap.put("userId4", ue4.getKakaoId());
         hashMap.put("companionId", ce.getId());
         hashMap.put("companionUserId", cue.getId());
+        hashMap.put("companionUserId2", cue2.getId());
 
         return hashMap;
     }

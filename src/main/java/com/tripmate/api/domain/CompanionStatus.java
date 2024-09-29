@@ -7,7 +7,7 @@ public enum CompanionStatus {
 
     RECRUITING("모집중"),
     CANCELED("모집취소"),
-    MATCHED("수락완료"),
+    MATCHED("매칭완료"),
     ACCOMPANY("동행시작"),
     FINISHED("동행종료");
 
@@ -16,4 +16,15 @@ public enum CompanionStatus {
     CompanionStatus(String description) {
         this.description = description;
     }
+
+    public boolean isValidName(String name) {
+
+        for (CompanionStatus status : CompanionStatus.values()) {
+            if (status.name().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
 }

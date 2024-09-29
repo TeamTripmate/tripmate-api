@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompanionUserEntity {
+public class CompanionUserEntity extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,5 +29,9 @@ public class CompanionUserEntity {
     private String matchingStatus;  // 매칭 상태
     @NotNull
     private boolean reviewYn;  // 후기작성여부
+
+    public void changeMatchingStatus(String status) {
+        this.matchingStatus = status;
+    }
 
 }
