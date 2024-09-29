@@ -1,5 +1,6 @@
 package com.tripmate.api.entity;
 
+import com.tripmate.api.dto.companion.UserInfo;
 import com.tripmate.api.dto.response.MypageUserInfoResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,5 +18,15 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
             + "WHERE ue.kakaoId = :userId"
     )
     MypageUserInfoResponse joinUserEntityAndTripStyleEntity(Long userId);
+
+    // TODO : 개인화 개발 완료되면 LEFT JOIN -> JOIN 변경하기
+    @Query(
+        "select new com.tripmate.api.dto.companion.UserInfo(ue.thumbnailImage, ue.nickname, "
+            + "tse.styleName, ue.characterType) "
+            + "from UserEntity ue "
+            + "LEFT JOIN TripStyleEntity tse ON tse.id = ue.tripStyleId "
+            + "WHERE ue.kakaoId = :userId"
+    )
+    UserInfo joinUserEntityAndTripStyleEntityForUserInfo(Long userId);
 
 }

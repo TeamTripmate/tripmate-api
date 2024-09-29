@@ -43,9 +43,10 @@ public class CompanionController {
         description = ""
     )
     @GetMapping("/user/{companionId}")
-    public ResponseEntity<TripmateApiResponse<CompanionInfoResponse>> getCompanionInfo(@PathVariable("companionId") Long companionId) {
+    public ResponseEntity<TripmateApiResponse<CompanionInfoResponse>> getCompanionInfo(
+        @AuthenticationPrincipal Long userId, @PathVariable("companionId") Long companionId) {
 
-        CompanionInfoResponse companionInfo = companionService.getCompanionInfo(companionId);
+        CompanionInfoResponse companionInfo = companionService.getCompanionInfo(companionId, userId);
 
         return ResponseEntity.ok(
             TripmateApiResponse.success(companionInfo));

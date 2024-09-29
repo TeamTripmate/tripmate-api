@@ -2,7 +2,9 @@ package com.tripmate.api.dto.companion;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
+import lombok.Builder;
 
+@Builder
 public record HostInfo(
         @Schema(description = "동행 모임장의 프로필 이미지 URL")
         String profileImage,

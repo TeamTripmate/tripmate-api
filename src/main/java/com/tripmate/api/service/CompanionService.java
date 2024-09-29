@@ -4,7 +4,7 @@ import com.tripmate.api.domain.CompanionStatus;
 import com.tripmate.api.domain.MatchingStatus;
 import com.tripmate.api.dto.companion.HostInfo;
 import com.tripmate.api.dto.companion.ReviewInfo;
-import com.tripmate.api.dto.companion.UserInfo;
+import com.tripmate.api.dto.companion.ReviewResult;
 import com.tripmate.api.dto.request.CollectCompanionRequest;
 import com.tripmate.api.dto.request.CompanionReviewRequest;
 import com.tripmate.api.dto.response.CollectCompanionResponse;
@@ -15,9 +15,13 @@ import com.tripmate.api.entity.CompanionReviewEntity;
 import com.tripmate.api.entity.CompanionReviewRepository;
 import com.tripmate.api.entity.CompanionUserEntity;
 import com.tripmate.api.entity.CompanionUserRepository;
-import java.util.ArrayList;
+import com.tripmate.api.entity.TripStyleEntity;
+import com.tripmate.api.entity.TripStyleRepository;
+import com.tripmate.api.entity.UserEntity;
+import com.tripmate.api.entity.UserRepository;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,61 +39,54 @@ public class CompanionService {
     private final CompanionRepository companionRepository;
     private final CompanionReviewRepository companionReviewRepository;
     private final CompanionUserRepository companionUserRepository;
+    private final UserRepository userRepository;
+    private final TripStyleRepository tripStyleRepository;
+    private final CompanionReviewService companionReviewService;
 
-    public CompanionInfoResponse getCompanionInfo(Long companionId) {
-        Optional<CompanionEntity> companion = companionRepository.findById(companionId);
+    public CompanionInfoResponse getCompanionInfo(Long companionId, Long userId) {
 
-        if (companion.isEmpty()) {
-            return null;
+        CompanionEntity companionEntity = companionRepository.findById(companionId)
+            .orElseThrow(() -> new NoSuchElementException("존재하지않는 동행모집 컨텐츠입니다", null));
+
+        Optional<CompanionUserEntity> companionUserEntity = companionUserRepository.findCompanionUserEntityByCompanionIdAndUserId(
+            companionId, userId);
+
+        boolean accompanyYn = false;
+        if (companionUserEntity.isPresent()) {
+            String matchingStatus = companionUserEntity.get().getMatchingStatus();
+            List<String> noLinkList = Arrays.asList(MatchingStatus.REQUEST.name(), MatchingStatus.REJECTED.name(),
+                MatchingStatus.CANCELED.name());
+            if (!noLinkList.contains(matchingStatus)) {
+                accompanyYn = true;
+            }
         }
 
-        // TODO : 테스트 데이터 제거 후 비지니스 로직 생성 필요
-        HostInfo hostInfoTest = new HostInfo(
-            "https://example.com/profile-image.jpg",
-            "JohnDoe",
-            "아기 펭귄",
-            "PENGUIN",
-            Arrays.asList("자유여행", "모험", "즉흥"),
-            85
-        );
+        UserEntity host = userRepository.findById(companionEntity.getHostId())
+            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다", null));
 
-        UserInfo userInfo1 = new UserInfo(
-            "https://example.com/user-profile.jpg",
-            "JaneDoe",
-            "아기 펭귄",
-            "PENGUIN"
-        );
+        TripStyleEntity tripStyleEntity = tripStyleRepository.findById(host.getTripStyleId())
+            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 여행스타일ID입니다", null));
 
-        // ReviewInfo 객체 생성 (리뷰 정보)
-        ReviewInfo reviewInfo = new ReviewInfo(
-            userInfo1,  // 리뷰 작성자 정보
-            "2024-09-24T14:42:23",  // 리뷰 작성 날짜
-            Arrays.asList("P1", "P2"),  // 좋았어요 리스트
-            Arrays.asList("N1", "N2")  // 아쉬워요 리스트
-        );
+        // TODO: 매칭 ratio는 개인화 개발 후 변경 필요
+        HostInfo hostInfo = HostInfo.builder()
+            .profileImage(host.getThumbnailImage())
+            .kakaoNickname(host.getNickname())
+            .characterName(tripStyleEntity.getStyleName())
+            .characterType(host.getCharacterType())
+            .selectedKeyword(Arrays.asList(tripStyleEntity.getKeyword1(), tripStyleEntity.getKeyword2(),
+                tripStyleEntity.getKeyword3()))
+            .matchingRatio(30).build();
 
-        UserInfo userInfo2 = new UserInfo(
-            "https://example.com/user-profile.jpg",
-            "JaneDoe",
-            "아기 펭귄",
-            "PENGUIN"
-        );
+        ReviewResult reviewResult = companionReviewService.getReviewInfos(host.getKakaoId());
+        List<ReviewInfo> reviewInfos = reviewResult.reviewInfos();
+        List<String> reviewRanks = reviewResult.reviewRankList();
 
-        // ReviewInfo 객체 생성 (리뷰 정보)
-        ReviewInfo reviewInfo2 = new ReviewInfo(
-            userInfo2,  // 리뷰 작성자 정보
-            "2024-09-24T14:42:23",  // 리뷰 작성 날짜
-            Arrays.asList("P3", "P4"),  // 좋았어요 리스트
-            Arrays.asList("N3", "N4")  // 아쉬워요 리스트
-        );
+        // TODO : 이후 로직 추가 필요!!!!!!
+        String gender = customGender(companionEntity.isSameGenderYn(), host.getGender());
+        String ageRange = "연령무관";
 
-        ArrayList<ReviewInfo> reviewInfos = new ArrayList<>();
-        reviewInfos.add(reviewInfo);
-        reviewInfos.add(reviewInfo2);
-
-        return CompanionInfoResponse.toResponse(companion.get(), hostInfoTest, reviewInfos,
-            Arrays.asList("P1", "N1", "P2"), "남자", "20대");
-//        return CompanionInfoResponse.toResponse(companion.get(), null, null, null, null, null);
+        return CompanionInfoResponse.toResponse(companionEntity, hostInfo, reviewInfos, reviewRanks, accompanyYn,
+            gender, ageRange);
     }
 
     public CollectCompanionResponse saveCompanionInfo(CollectCompanionRequest collectCompanionRequest) {
@@ -118,9 +115,8 @@ public class CompanionService {
 //        CompanionEntity companionEntity = modelMapper.map(collectCompanionRequest, CompanionEntity.class);
 
         CompanionEntity ce = companionRepository.save(companionEntity);
-        CollectCompanionResponse ccr = CollectCompanionResponse.builder()
+        return CollectCompanionResponse.builder()
             .companionId(ce.getId()).build();
-        return ccr;
     }
 
     /**
@@ -128,18 +124,22 @@ public class CompanionService {
      *
      * @param userId
      * @param companionReviewRequest
-     * TODO: 상대에 대한 리뷰 생성임!!!!! - userId 말고 host 유저 id 가져와서 해당 유저 id로 저장해야함..
      */
     public void saveCompanionReview(Long userId, CompanionReviewRequest companionReviewRequest) {
 
         Long companionId = companionReviewRequest.companionId();
         List<String> likeList = companionReviewRequest.likeList();
         List<String> badList = companionReviewRequest.badList();
+        CompanionEntity companionEntity = companionRepository.findById(companionId)
+            .orElseThrow(() -> new NoSuchElementException("존재하지않는 동행모집 컨텐츠입니다", null));
+
+        Long hostId = companionEntity.getHostId();
 
         for (String like : likeList) {
             CompanionReviewEntity cre = CompanionReviewEntity.builder()
                 .companionId(companionId)
-                .userId(userId)
+                .reviewerId(userId)
+                .revieweeId(hostId)
                 .feedback(like)
                 .isPositive(true).build();
             companionReviewRepository.save(cre);
@@ -148,7 +148,8 @@ public class CompanionService {
         for (String bad : badList) {
             CompanionReviewEntity cre = CompanionReviewEntity.builder()
                 .companionId(companionId)
-                .userId(userId)
+                .reviewerId(userId)
+                .revieweeId(hostId)
                 .feedback(bad)
                 .isPositive(false).build();
             companionReviewRepository.save(cre);
@@ -165,6 +166,11 @@ public class CompanionService {
             .build();
 
         companionUserRepository.save(companionUserEntity);
+    }
+
+    private String customGender(boolean sameGenderYn, String hostGender) {
+
+        return "성별무관";
     }
 
 }
