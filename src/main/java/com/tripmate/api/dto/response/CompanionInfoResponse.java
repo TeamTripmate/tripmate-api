@@ -41,7 +41,7 @@ public record CompanionInfoResponse(
 ) {
 
     public static CompanionInfoResponse toResponse(CompanionEntity entity, HostInfo hostInfo,
-        List<ReviewInfo> reviewInfos, List<String> reviewRanks, String gender, String ageRange) {
+        List<ReviewInfo> reviewInfos, List<String> reviewRanks, boolean accompanyYn, String gender, String ageRange) {
 
         return CompanionInfoResponse.builder()
             .title(entity.getTitle())
@@ -49,8 +49,7 @@ public record CompanionInfoResponse(
             .gender(gender)
             .ageRange(ageRange)
             .date(entity.getStartDate())  // LocalDateTime 사용
-            // TODO : 유형 정보 enum 필요.. companionType 이거 유형 왜 있냐...
-            .accompanyYn("ACCOMPANY".equals(entity.getCompanionType()))  // 동행 여부를 boolean으로 변환
+            .accompanyYn(accompanyYn)
             .chatLink(entity.getOpenChatLink())
             .description(entity.getDescription())
             .hostInfo(hostInfo)  // 호스트 정보
