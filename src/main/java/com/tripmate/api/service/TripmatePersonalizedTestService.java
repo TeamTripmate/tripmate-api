@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -26,13 +27,15 @@ public class TripmatePersonalizedTestService {
             Long userId,
             TripmatePersonalizedTestRequest request
     ) {
+        List<String> keywords = request.keywords().stream().sorted().toList();
+
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다.", null));
 
         TripStyleEntity tripStyle = tripStyleRepository.findByKeywords(
-                request.keywords().get(0),
-                request.keywords().get(1),
-                request.keywords().get(2)
+                keywords.get(0),
+                keywords.get(1),
+                keywords.get(2)
         ).orElseThrow(() -> new NoSuchElementException("여행 스타일이 존재하지 않습니다.", null));
 
         user.applyTripmatePersonalizedTestResult(new TripmatePersonalizedTestResult(
