@@ -26,28 +26,35 @@ public class CompanionEntity extends AbstractEntity {
 
     @NotNull
     private Long spotId;  // 여행지 ID
+
     @NotNull
     private String title;  // 제목
+
     @NotNull
     private String description;  // 내용
+
     @NotNull
     private LocalDateTime startDate;  // 동행 시작일
+
     @NotNull
     private String companionType;  // 동행 유형
+
     @NotNull
     private String companionStatus; // 동행 모집 상태
+
     @NotNull
     private String openChatLink;  // 오픈채팅 링크
 
     @NotNull
     private Long hostId;  // 호스트 ID
+
     @NotNull
     private boolean sameAgeYn;
+
     @NotNull
     private boolean sameGenderYn;
 
     public void changeStatus(String status) {
         this.companionStatus = status;
     }
-
 }

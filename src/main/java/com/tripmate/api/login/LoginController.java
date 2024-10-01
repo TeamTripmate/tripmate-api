@@ -84,19 +84,4 @@ public class LoginController {
             mypageUserInfo
         ));
     }
-
-    @Operation(
-            summary = "Tripmate 개인화 설문(여행 스타일 및 호구조사) API"
-    )
-    @PostMapping("users/{userId}/personalized-tests")
-    public ResponseEntity<TripmateApiResponse<TripmatePersonalizedTestResponse>> submitPersonalizedTest(
-            @PathVariable("userId") Long userId,
-            @Valid @RequestBody TripmatePersonalizedTestRequest tripmatePersonalizedTestRequest
-    ) {
-        String mbti = tripmatePersonalizedTestRequest.mbti();
-        TripmateCharacterType characterType = TripmateCharacterType.fromMBTI(mbti);
-        return ResponseEntity.ok(TripmateApiResponse.success(
-                new TripmatePersonalizedTestResponse(characterType)
-        ));
-    }
 }

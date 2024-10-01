@@ -1,6 +1,7 @@
 package com.tripmate.api.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.tripmate.api.domain.user.TripmateCharacterType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,8 +44,9 @@ public class MyApplyCompanionListResponse {
 
         @Schema(description = "동행 모임장 여행 스타일")
         private String tripStyle;
+
         @Schema(description = "동행 모임장 캐릭터 id")
-        private String characterId;
+        private TripmateCharacterType characterId;
 
     }
 }

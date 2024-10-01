@@ -18,19 +18,19 @@ public record CompanionRecruitInfo(
         @Schema(description = "동행모집 제목", example = "강릉 인근에서 같이 식사할 사람 구해요! (선착 1명)")
         String title,
 
-        @Schema(description = "성별", example = "남자")
+        @Schema(description = "선호 성별", example = "남자만")
         String gender,
 
         @Schema(description = "나이대", example = "20대")
         String ageRange
 ) {
 
-        public static CompanionRecruitInfo fromEntity(CompanionEntity companion, UserEntity host, TripStyleEntity tripStyle) {
+        public static CompanionRecruitInfo fromCompanion(CompanionEntity companion, UserEntity host, TripStyleEntity tripStyle) {
                 return CompanionRecruitInfo.builder()
                         .companionId(companion.getId())
                         .hostInfo(HostInfo.fromUser(host, tripStyle))
                         .title(companion.getTitle())
-                        .gender(host.getGender())
+                        .gender(companion.isSameAgeYn() ? host.getGender().getGenderName() + "만" : "성별무관")
                         .ageRange(host.getAgeRange())
                         .build();
         }

@@ -2,6 +2,7 @@ package com.tripmate.api.service;
 
 import com.tripmate.api.domain.CompanionStatus;
 import com.tripmate.api.domain.MatchingStatus;
+import com.tripmate.api.domain.user.Gender;
 import com.tripmate.api.domain.user.TripmateCharacterType;
 import com.tripmate.api.entity.CompanionEntity;
 import com.tripmate.api.entity.CompanionRepository;
@@ -46,10 +47,10 @@ public class DemoService {
             .nickname("여행자123")  // 닉네임
             .profileImage("https://example.com/profile.jpg")  // 프로필 이미지
             .thumbnailImage("https://example.com/thumbnail.jpg")  // 썸네일 이미지
-            .gender("남성")  // 성별
-            .birthYear("1990")  // 출생년도
+            .gender(Gender.MALE)  // 성별
+            .birthDate("901012")  // 출생년도
             .tripStyleId(tse.getId())  // 여행 스타일 ID
-            .characterType(TripmateCharacterType.DOLPHIN.name())  // 캐릭터 유형
+            .characterType(TripmateCharacterType.DOLPHIN)  // 캐릭터 유형
             .deleted(false)  // 삭제 여부
             .build();
         UserEntity ue1 = userRepository.save(user1);
@@ -59,10 +60,10 @@ public class DemoService {
             .nickname("산책러")  // 닉네임
             .profileImage("https://example.com/walker_profile.jpg")  // 프로필 이미지
             .thumbnailImage("https://example.com/walker_thumbnail.jpg")  // 썸네일 이미지
-            .gender("여성")  // 성별
-            .birthYear("1985")  // 출생년도
+            .gender(Gender.FEMALE)  // 성별
+            .birthDate("851121")  // 출생년도
             .tripStyleId(tse.getId())  // 여행 스타일 ID
-            .characterType(TripmateCharacterType.PANDA.name())  // 캐릭터 유형
+            .characterType(TripmateCharacterType.PANDA)  // 캐릭터 유형
             .deleted(false)  // 삭제 여부
             .build();
         UserEntity ue2 = userRepository.save(user2);
@@ -72,10 +73,10 @@ public class DemoService {
             .nickname("칠칠이")  // 닉네임
             .profileImage("https://example.com/walker_profile777.jpg")  // 프로필 이미지
             .thumbnailImage("https://example.com/walker_thumbnail777.jpg")  // 썸네일 이미지
-            .gender("여성")  // 성별
-            .birthYear("1977")  // 출생년도
+            .gender(Gender.FEMALE)  // 성별
+            .birthDate("770908")  // 출생년도
             .tripStyleId(tse.getId())  // 여행 스타일 ID
-            .characterType(TripmateCharacterType.HONEYBEE.name())  // 캐릭터 유형
+            .characterType(TripmateCharacterType.HONEYBEE)  // 캐릭터 유형
             .deleted(false)  // 삭제 여부
             .build();
         UserEntity ue3 = userRepository.save(user3);
@@ -85,10 +86,10 @@ public class DemoService {
             .nickname("육육이")  // 닉네임
             .profileImage("https://example.com/walker_profile666.jpg")  // 프로필 이미지
             .thumbnailImage("https://example.com/walker_thumbnail666.jpg")  // 썸네일 이미지
-            .gender("남성")  // 성별
-            .birthYear("1989")  // 출생년도
+            .gender(Gender.MALE)  // 성별
+            .birthDate("1989")  // 출생년도
             .tripStyleId(tse.getId())  // 여행 스타일 ID
-            .characterType(TripmateCharacterType.TURTLE.name())  // 캐릭터 유형
+            .characterType(TripmateCharacterType.TURTLE)  // 캐릭터 유형
             .deleted(false)  // 삭제 여부
             .build();
         UserEntity ue4 = userRepository.save(user4);
