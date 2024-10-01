@@ -9,6 +9,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Entity
 @Getter
 @Builder
@@ -21,7 +24,14 @@ public class TripStyleEntity {
     private Long id;
 
     private String styleName;
+
     private String keyword1;
+
     private String keyword2;
+
     private String keyword3;
+
+    public List<String> getSelectedKeywords() {
+        return Arrays.asList(keyword1, keyword2, keyword3);
+    }
 }

@@ -11,6 +11,7 @@ import com.tripmate.api.dto.response.LocationBasedSpotListResponse;
 import com.tripmate.api.dto.response.SpotDetailResponse;
 import com.tripmate.api.dto.response.TripmateApiResponse;
 import com.tripmate.api.dto.spot.LocationBasedSpotInfo;
+import com.tripmate.api.service.CompanionService;
 import com.tripmate.api.service.LocationBasedSpotSearchService;
 import com.tripmate.integration.tourapi.dto.response.SpotCommonInfo;
 import com.tripmate.integration.tourapi.service.TourApiService;
@@ -40,6 +41,8 @@ public class SpotController {
     private final LocationBasedSpotSearchService locationBasedSpotSearchService;
 
     private final TourApiService tourApiService;
+
+    private final CompanionService companionService;
 
     @Operation(
             summary = "여행지 검색 API",
@@ -72,7 +75,7 @@ public class SpotController {
         SpotCommonInfo spotCommonInfo = tourApiService.getSpotDetailInfo(spotId);
         SpotType spotType = SpotType.fromTourApiCategory(spotCommonInfo.cat2());
 
-        List<CompanionRecruitInfo> companionRecruits = Collections.emptyList();
+        List<CompanionRecruitInfo> companionRecruits = companionService.getCompanionRecruitsBySpot(spotId);
 
         return ResponseEntity.ok(
                 TripmateApiResponse.success(
