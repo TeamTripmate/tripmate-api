@@ -9,4 +9,5 @@ public interface CompanionRepository extends JpaRepository<CompanionEntity, Long
 
     List<CompanionEntity> findCompanionEntitiesByHostId(Long hostId);
 
+    List<CompanionEntity> findCompanionEntitiesBySpotId(Long spotId);
 }

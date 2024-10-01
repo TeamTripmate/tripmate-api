@@ -1,7 +1,6 @@
 package com.tripmate.api.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,14 +20,22 @@ public class UserEntity extends AbstractEntity {
 
     @NotNull
     private String nickname;
+
     @NotNull
     private String profileImage;
+
     @NotNull
     private String thumbnailImage;
 
     private String gender;
+
     private String birthYear;
+
     private Long tripStyleId;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "trip_style_id", referencedColumnName = "id")
+//    private TripStyleEntity tripStyle;
+
     private String characterType;
 
     @ColumnDefault("false")
@@ -38,4 +45,7 @@ public class UserEntity extends AbstractEntity {
         this.deleted = true;
     }
 
+    public String getAgeRange() {
+        return "30대";
+    }
 }

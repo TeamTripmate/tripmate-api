@@ -2,6 +2,7 @@ package com.tripmate.api.service;
 
 import com.tripmate.api.domain.CompanionStatus;
 import com.tripmate.api.domain.MatchingStatus;
+import com.tripmate.api.dto.companion.CompanionRecruitInfo;
 import com.tripmate.api.dto.companion.HostInfo;
 import com.tripmate.api.dto.companion.ReviewInfo;
 import com.tripmate.api.dto.companion.ReviewResult;
@@ -9,33 +10,22 @@ import com.tripmate.api.dto.request.CollectCompanionRequest;
 import com.tripmate.api.dto.request.CompanionReviewRequest;
 import com.tripmate.api.dto.response.CollectCompanionResponse;
 import com.tripmate.api.dto.response.CompanionInfoResponse;
-import com.tripmate.api.entity.CompanionEntity;
-import com.tripmate.api.entity.CompanionRepository;
-import com.tripmate.api.entity.CompanionReviewEntity;
-import com.tripmate.api.entity.CompanionReviewRepository;
-import com.tripmate.api.entity.CompanionUserEntity;
-import com.tripmate.api.entity.CompanionUserRepository;
-import com.tripmate.api.entity.TripStyleEntity;
-import com.tripmate.api.entity.TripStyleRepository;
-import com.tripmate.api.entity.UserEntity;
-import com.tripmate.api.entity.UserRepository;
+import com.tripmate.api.entity.*;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
-@Transactional
 public class CompanionService {
 
-    private final ModelMapper modelMapper;
     private final CompanionRepository companionRepository;
     private final CompanionReviewRepository companionReviewRepository;
     private final CompanionUserRepository companionUserRepository;
@@ -43,6 +33,7 @@ public class CompanionService {
     private final TripStyleRepository tripStyleRepository;
     private final CompanionReviewService companionReviewService;
 
+    @Transactional(readOnly = true)
     public CompanionInfoResponse getCompanionInfo(Long companionId, Long userId) {
 
         CompanionEntity companionEntity = companionRepository.findById(companionId)
@@ -89,6 +80,23 @@ public class CompanionService {
             gender, ageRange);
     }
 
+    @Transactional(readOnly = true)
+    public List<CompanionRecruitInfo> getCompanionRecruitsBySpot(Long spotId) {
+        return companionRepository.findCompanionEntitiesBySpotId(spotId)
+                .stream()
+                .map(companion -> {
+                    UserEntity host = userRepository.findById(companion.getHostId())
+                            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다.", null));
+
+                    TripStyleEntity tripStyle = tripStyleRepository.findById(host.getTripStyleId())
+                            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 여행스타일ID입니다", null));
+
+                    return CompanionRecruitInfo.fromEntity(companion, host, tripStyle);
+                })
+                .toList();
+    }
+
+    @Transactional
     public CollectCompanionResponse saveCompanionInfo(CollectCompanionRequest collectCompanionRequest) {
 
         // 동행 엔티티 생성
@@ -125,6 +133,7 @@ public class CompanionService {
      * @param userId
      * @param companionReviewRequest
      */
+    @Transactional
     public void saveCompanionReview(Long userId, CompanionReviewRequest companionReviewRequest) {
 
         Long companionId = companionReviewRequest.companionId();
@@ -156,6 +165,7 @@ public class CompanionService {
         }
     }
 
+    @Transactional
     public void saveCompanionApply(Long companionId, Long userId) {
 
         CompanionUserEntity companionUserEntity = CompanionUserEntity.builder()

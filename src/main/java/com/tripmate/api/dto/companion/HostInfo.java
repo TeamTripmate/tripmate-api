@@ -1,8 +1,13 @@
 package com.tripmate.api.dto.companion;
 
+import com.tripmate.api.entity.TripStyleEntity;
+import com.tripmate.api.entity.UserEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Arrays;
 import java.util.List;
 import lombok.Builder;
+import org.apache.catalina.Host;
 
 @Builder
 public record HostInfo(
@@ -24,4 +29,17 @@ public record HostInfo(
         @Schema(description = "동행 모임장과 매칭 비율")
         int matchingRatio
 ) {
+
+        public static HostInfo fromUser(UserEntity user, TripStyleEntity tripStyle) {
+//                TripStyleEntity tripStyle = user.getTripStyle();
+
+                return HostInfo.builder()
+                        .profileImage(user.getProfileImage())
+                        .kakaoNickname(user.getNickname())
+                        .characterName(tripStyle.getStyleName())
+                        .characterType(user.getCharacterType())
+                        .selectedKeyword(tripStyle.getSelectedKeywords())
+                        .matchingRatio(30)
+                        .build();
+        }
 }
