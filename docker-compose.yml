@@ -26,8 +26,8 @@ services:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
     volumes:
-      - ./bin/mysql/data:/var/lib/mysql
-      - ./bin/mysql/initdb.d:/docker-entrypoint-initdb.d
+      - ./.docker/mysql/data:/var/lib/mysql
+      - ./.docker/mysql/initdb.d:/docker-entrypoint-initdb.d
     profiles:
       - "prod"
       - "test"
