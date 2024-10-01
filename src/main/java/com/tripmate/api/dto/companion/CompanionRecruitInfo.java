@@ -25,7 +25,7 @@ public record CompanionRecruitInfo(
         String ageRange
 ) {
 
-        public static CompanionRecruitInfo fromEntity(CompanionEntity companion, UserEntity host, TripStyleEntity tripStyle) {
+        public static CompanionRecruitInfo fromCompanion(CompanionEntity companion, UserEntity host, TripStyleEntity tripStyle) {
                 return CompanionRecruitInfo.builder()
                         .companionId(companion.getId())
                         .hostInfo(HostInfo.fromUser(host, tripStyle))

@@ -2,7 +2,6 @@ package com.tripmate.api.service;
 
 import com.tripmate.api.domain.CompanionStatus;
 import com.tripmate.api.domain.MatchingStatus;
-import com.tripmate.api.dto.companion.CompanionRecruitInfo;
 import com.tripmate.api.dto.companion.HostInfo;
 import com.tripmate.api.dto.companion.ReviewInfo;
 import com.tripmate.api.dto.companion.ReviewResult;
@@ -78,22 +77,6 @@ public class CompanionService {
 
         return CompanionInfoResponse.toResponse(companionEntity, hostInfo, reviewInfos, reviewRanks, accompanyYn,
             gender, ageRange);
-    }
-
-    @Transactional(readOnly = true)
-    public List<CompanionRecruitInfo> getCompanionRecruitsBySpot(Long spotId) {
-        return companionRepository.findCompanionEntitiesBySpotId(spotId)
-                .stream()
-                .map(companion -> {
-                    UserEntity host = userRepository.findById(companion.getHostId())
-                            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다.", null));
-
-                    TripStyleEntity tripStyle = tripStyleRepository.findById(host.getTripStyleId())
-                            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 여행스타일ID입니다", null));
-
-                    return CompanionRecruitInfo.fromEntity(companion, host, tripStyle);
-                })
-                .toList();
     }
 
     @Transactional
@@ -179,8 +162,6 @@ public class CompanionService {
     }
 
     private String customGender(boolean sameGenderYn, String hostGender) {
-
         return "성별무관";
     }
-
 }
