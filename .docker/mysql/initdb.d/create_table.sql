@@ -1,4 +1,4 @@
-CREATE TABLE trip_style
+CREATE TABLE trip_style_entity
 (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
     style_name VARCHAR(255),
