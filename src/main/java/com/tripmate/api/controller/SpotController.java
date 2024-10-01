@@ -6,19 +6,21 @@ import com.tripmate.api.domain.spot.SpotType;
 import com.tripmate.api.domain.user.TripmateCharacter;
 import com.tripmate.api.domain.user.TripmateCharacterType;
 import com.tripmate.api.dto.companion.CompanionRecruitInfo;
-import com.tripmate.api.dto.companion.HostInfo;
 import com.tripmate.api.dto.request.LocationBasedSpotSearchRequest;
 import com.tripmate.api.dto.response.LocationBasedSpotListResponse;
 import com.tripmate.api.dto.response.SpotDetailResponse;
 import com.tripmate.api.dto.response.TripmateApiResponse;
 import com.tripmate.api.dto.spot.LocationBasedSpotInfo;
 import com.tripmate.api.service.LocationBasedSpotSearchService;
+import com.tripmate.integration.tourapi.dto.response.SpotCommonInfo;
+import com.tripmate.integration.tourapi.service.TourApiService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
-import java.util.Arrays;
+
+import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +38,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class SpotController {
 
     private final LocationBasedSpotSearchService locationBasedSpotSearchService;
+
+    private final TourApiService tourApiService;
 
     @Operation(
             summary = "여행지 검색 API",
@@ -65,55 +69,64 @@ public class SpotController {
     })
     @GetMapping("{spotId}")
     public ResponseEntity<TripmateApiResponse<SpotDetailResponse>> getSpotDetail(@PathVariable Long spotId) {
+        SpotCommonInfo spotCommonInfo = tourApiService.getSpotDetailInfo(spotId);
+        SpotType spotType = SpotType.fromTourApiCategory(spotCommonInfo.cat2());
+
+        List<CompanionRecruitInfo> companionRecruits = Collections.emptyList();
+
         return ResponseEntity.ok(
                 TripmateApiResponse.success(
                         new SpotDetailResponse(
                                 spotId,
-                                "서핑 체험",
-                                "Quae eius ea nihil quasi mollitia consectetur natus repudiandae aut. Sit maiores minus asperiores illum rem. Sunt commodi aliquam ipsam quas aliquam minima.",
-                                SpotType.EXPERIENCE,
-                                "https://dimg.donga.com/wps/NEWS/IMAGE/2021/07/16/107979650.1.jpg",
-                                "010-0000-0000",
+                                spotCommonInfo.title(),
+                                spotCommonInfo.overview(),
+                                spotType,
+                                spotCommonInfo.firstImage(),
+                                spotCommonInfo.tel(),
                                 new Location(
-                                        "37.7563022",
-                                        "128.922632",
-                                        new Address("강원 양양군 현북면 하조대해안길 119", "")
+                                        spotCommonInfo.mapY(),
+                                        spotCommonInfo.mapX(),
+                                        new Address(
+                                                spotCommonInfo.addr1(),
+                                                spotCommonInfo.addr2()
+                                        )
                                 ),
                                 List.of(
                                         new TripmateCharacter("인스타 모험자 아기 돌고래", TripmateCharacterType.DOLPHIN),
                                         new TripmateCharacter("랜드마크 탐험가 아기 펭귄", TripmateCharacterType.PENGUIN),
                                         new TripmateCharacter("인생샷 찍는 인스타 인플루언서 꿀벌", TripmateCharacterType.HONEYBEE)
                                 ),
-                                List.of(
-                                        new CompanionRecruitInfo(
-                                                1L,
-                                                new HostInfo(
-                                                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq5wHDD6sXA3M1EhvtDL6MC38-6G27SiCg7g&s",
-                                                        "나는야고윤정",
-                                                        "인스타 인플루언서 아기 펭귄",
-                                                    "PENGUIN",
-                                                        Arrays.asList("맛집탐험형", "액티비티형", "쇼핑형"),
-                                                        70
-                                                ),
-                                                "서피비치 인근에서 같이 식사할 사람 구해요!",
-                                                "여자",
-                                                "20대"
-                                        ),
-                                        new CompanionRecruitInfo(
-                                                2L,
-                                                new HostInfo(
-                                                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq5wHDD6sXA3M1EhvtDL6MC38-6G27SiCg7g&s",
-                                                        "춤추는 심바",
-                                                        "쇼핑을 즐기는 비버",
-                                                    "PENGUIN",
-                                                        Arrays.asList("맛집탐험형", "액티비티형", "쇼핑형"),
-                                                        70
-                                                ),
-                                                "서피비치 인근에서 같이 식사할 사람 구해요!",
-                                                "여자",
-                                                "30대"
-                                        )
-                                )
+                                companionRecruits
+//                                List.of(
+//                                        new CompanionRecruitInfo(
+//                                                1L,
+//                                                new HostInfo(
+//                                                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq5wHDD6sXA3M1EhvtDL6MC38-6G27SiCg7g&s",
+//                                                        "나는야고윤정",
+//                                                        "인스타 인플루언서 아기 펭귄",
+//                                                    "PENGUIN",
+//                                                        Arrays.asList("맛집탐험형", "액티비티형", "쇼핑형"),
+//                                                        70
+//                                                ),
+//                                                "서피비치 인근에서 같이 식사할 사람 구해요!",
+//                                                "여자",
+//                                                "20대"
+//                                        ),
+//                                        new CompanionRecruitInfo(
+//                                                2L,
+//                                                new HostInfo(
+//                                                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq5wHDD6sXA3M1EhvtDL6MC38-6G27SiCg7g&s",
+//                                                        "춤추는 심바",
+//                                                        "쇼핑을 즐기는 비버",
+//                                                    "PENGUIN",
+//                                                        Arrays.asList("맛집탐험형", "액티비티형", "쇼핑형"),
+//                                                        70
+//                                                ),
+//                                                "서피비치 인근에서 같이 식사할 사람 구해요!",
+//                                                "여자",
+//                                                "30대"
+//                                        )
+//                                )
                         )
                 )
         );
