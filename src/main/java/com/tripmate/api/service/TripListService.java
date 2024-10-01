@@ -34,8 +34,8 @@ public class TripListService {
 
     public List<MyApplyCompanionListResponse> getMyAppliedCompanionList(Long userId) {
 
-        List<MyApplyCompanionListInfo> myApplyCompanionListInfos = companionUserRepository.joinCompanionUserEntityAndCompanionEntity(
-            userId);
+        List<MyApplyCompanionListInfo> myApplyCompanionListInfos = companionUserRepository
+                .joinCompanionUserEntityAndCompanionEntity(userId);
 
         ArrayList<MyApplyCompanionListResponse> responses = new ArrayList<>();
 
@@ -48,7 +48,8 @@ public class TripListService {
             TripHostInfo tripHostInfo = TripHostInfo.builder()
                 .selectedKeyword(keywords)
                 .tripStyle(myApplyCompanionListInfo.getTripStyle())
-                .characterId(myApplyCompanionListInfo.getCharacterId()).build();
+                .characterId(myApplyCompanionListInfo.getCharacterId())
+                .build();
 
             MyApplyCompanionListResponse myApplyCompanionListResponse = modelMapper.map(myApplyCompanionListInfo,
                 MyApplyCompanionListResponse.class);
@@ -113,7 +114,5 @@ public class TripListService {
             }
             entity.changeMatchingStatus(MatchingStatus.REJECTED.name());
         }
-
     }
-
 }

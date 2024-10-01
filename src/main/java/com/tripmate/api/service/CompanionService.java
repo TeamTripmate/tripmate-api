@@ -2,6 +2,7 @@ package com.tripmate.api.service;
 
 import com.tripmate.api.domain.CompanionStatus;
 import com.tripmate.api.domain.MatchingStatus;
+import com.tripmate.api.domain.user.Gender;
 import com.tripmate.api.dto.companion.HostInfo;
 import com.tripmate.api.dto.companion.ReviewInfo;
 import com.tripmate.api.dto.companion.ReviewResult;
@@ -161,7 +162,11 @@ public class CompanionService {
         companionUserRepository.save(companionUserEntity);
     }
 
-    private String customGender(boolean sameGenderYn, String hostGender) {
+    private String customGender(boolean sameGenderYn, Gender hostGender) {
+        if (sameGenderYn) {
+            return hostGender.getGenderName() + "만";
+        }
+
         return "성별무관";
     }
 }

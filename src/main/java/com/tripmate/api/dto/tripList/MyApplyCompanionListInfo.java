@@ -1,6 +1,8 @@
 package com.tripmate.api.dto.tripList;
 
 import java.time.LocalDateTime;
+
+import com.tripmate.api.domain.user.TripmateCharacterType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,11 +29,14 @@ public class MyApplyCompanionListInfo {
     private String matchingStatus;
 
     private String keyword1;
+
     private String keyword2;
+
     private String keyword3;
 
     private String tripStyle;
-    private String characterId;
+
+    private TripmateCharacterType characterId;
 
     @Override
     public String toString() {

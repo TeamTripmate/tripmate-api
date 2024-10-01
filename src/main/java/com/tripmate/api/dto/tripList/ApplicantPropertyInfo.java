@@ -1,5 +1,6 @@
 package com.tripmate.api.dto.tripList;
 
+import com.tripmate.api.domain.user.TripmateCharacterType;
 import com.tripmate.api.dto.response.MyCollectCompanionListResponse.ApplicantInfo;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class ApplicantPropertyInfo {
     private String keyword3;
 
     private String tripStyle;
-    private String characterId;
+    private TripmateCharacterType characterId;
 
     public List<String> getKeywordList() {
         ArrayList<String> keywords = new ArrayList<>();

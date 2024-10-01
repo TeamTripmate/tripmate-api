@@ -1,5 +1,8 @@
 package com.tripmate.api.entity;
 
+import com.tripmate.api.domain.test.TripmatePersonalizedTestResult;
+import com.tripmate.api.domain.user.Gender;
+import com.tripmate.api.domain.user.TripmateCharacterType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -27,16 +30,17 @@ public class UserEntity extends AbstractEntity {
     @NotNull
     private String thumbnailImage;
 
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
-    private String birthYear;
+    private String birthDate;
 
     private Long tripStyleId;
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "trip_style_id", referencedColumnName = "id")
-//    private TripStyleEntity tripStyle;
 
-    private String characterType;
+    @Enumerated(EnumType.STRING)
+    private TripmateCharacterType characterType;
+
+    private String mbti;
 
     @ColumnDefault("false")
     private boolean deleted;
@@ -45,7 +49,20 @@ public class UserEntity extends AbstractEntity {
         this.deleted = true;
     }
 
+
     public String getAgeRange() {
         return "30대";
+    }
+
+    public void applyTripmatePersonalizedTestResult(TripmatePersonalizedTestResult result) {
+        this.changeMBTI(result.mbti());
+        this.tripStyleId = result.tripStyleId();
+        this.gender = result.gender();
+        this.birthDate = result.birthDate();
+    }
+
+    private void changeMBTI(String mbti) {
+        this.mbti = mbti;
+        this.characterType = TripmateCharacterType.fromMBTI(mbti);
     }
 }

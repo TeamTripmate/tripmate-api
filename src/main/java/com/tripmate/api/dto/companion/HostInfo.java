@@ -1,5 +1,6 @@
 package com.tripmate.api.dto.companion;
 
+import com.tripmate.api.domain.user.TripmateCharacterType;
 import com.tripmate.api.entity.TripStyleEntity;
 import com.tripmate.api.entity.UserEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,7 +22,7 @@ public record HostInfo(
         String characterName,
 
         @Schema(description = "동행 모임장의 캐릭터 타입")
-        String characterType,
+        TripmateCharacterType characterType,
 
         @Schema(description = "동행 모임장의 여행 스타일 키워드 목록")
         List<String> selectedKeyword,
