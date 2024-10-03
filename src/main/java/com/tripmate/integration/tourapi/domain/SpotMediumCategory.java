@@ -30,7 +30,7 @@ public enum SpotMediumCategory {
     B0201("숙박시설"),
     A0401("쇼핑"),
     A0502("음식"),
-    UNKNOWN("알려지지 않은 여행지");
+    UNKNOWN("기타");
 
     private final String categoryName;
 
