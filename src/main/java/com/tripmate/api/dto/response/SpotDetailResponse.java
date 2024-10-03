@@ -1,9 +1,13 @@
 package com.tripmate.api.dto.response;
 
+import com.tripmate.api.domain.Spot;
+import com.tripmate.api.domain.spot.Address;
 import com.tripmate.api.domain.spot.Location;
 import com.tripmate.api.domain.spot.SpotType;
 import com.tripmate.api.domain.user.TripmateCharacter;
+import com.tripmate.api.domain.user.TripmateCharacterType;
 import com.tripmate.api.dto.companion.CompanionRecruitInfo;
+import com.tripmate.integration.tourapi.dto.response.SpotCommonInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -35,7 +39,31 @@ public record SpotDetailResponse(
 
         @Schema(description = "동행 모집 목록")
         List<CompanionRecruitInfo> companionRecruits
-
-        // TODO: 여행지 카테고리는 당장 필요없어 보임
 ) {
+        public static SpotDetailResponse toResponse(
+                SpotCommonInfo spotCommonInfo,
+                List<TripmateCharacter> recommendedStyles,
+                List<CompanionRecruitInfo> companionRecruits
+        ) {
+                SpotType spotType = SpotType.fromTourApiCategory(spotCommonInfo.cat2());
+
+                return new SpotDetailResponse(
+                        Long.valueOf(spotCommonInfo.spotId()),
+                        spotCommonInfo.title(),
+                        spotCommonInfo.overview(),
+                        spotType,
+                        spotCommonInfo.firstImage(),
+                        spotCommonInfo.tel(),
+                        new Location(
+                                spotCommonInfo.mapY(),
+                                spotCommonInfo.mapX(),
+                                new Address(
+                                        spotCommonInfo.addr1(),
+                                        spotCommonInfo.addr2()
+                                )
+                        ),
+                        recommendedStyles,
+                        companionRecruits
+                );
+        }
 }
