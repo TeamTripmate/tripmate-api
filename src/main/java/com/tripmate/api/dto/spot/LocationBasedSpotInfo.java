@@ -6,6 +6,7 @@ import com.tripmate.api.domain.spot.SpotCategory;
 import com.tripmate.api.domain.spot.SpotType;
 import com.tripmate.integration.tourapi.domain.SpotMediumCategory;
 import com.tripmate.integration.tourapi.dto.response.LocationBasedSpotItem;
+import com.tripmate.integration.tourapi.dto.response.SpotCommonInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
@@ -39,27 +40,27 @@ public record LocationBasedSpotInfo(
         boolean companionYn
 ) {
 
-    public static LocationBasedSpotInfo fromLocationBasedSpotItem(LocationBasedSpotItem from) {
-        SpotMediumCategory mediumCategory = from.cat2();
+    public static LocationBasedSpotInfo toLocationBasedSpotInfo(LocationBasedSpotItem from1, SpotCommonInfo from2) {
+        SpotMediumCategory mediumCategory = from1.cat2();
         SpotType spotType = SpotType.fromTourApiCategory(mediumCategory);
 
         return LocationBasedSpotInfo.builder()
-                .spotId(from.contentId())
-                .title(from.title())
+                .spotId(from1.contentId())
+                .title(from1.title())
                 // TODO: 세부 사항 주기
-                .description("Tripmate API에서 지원 예정 내용입니다.")
-                .distance(from.dist())
-                .thumbnailUrl(from.firstImage2())
+                .description(from2.overview())
+                .distance(from1.dist())
+                .thumbnailUrl(from1.firstImage())
                 .location(new Location(
-                        from.mapY(),
-                        from.mapX(),
-                        new Address(from.addr1(), from.addr2())
+                        from1.mapY(),
+                        from1.mapX(),
+                        new Address(from1.addr1(), from1.addr2())
                 ))
                 .spotType(spotType)
                 .category(new SpotCategory(
-                        from.cat1(),
+                        from1.cat1(),
                         mediumCategory.getCategoryName(),
-                        from.cat3().getCategoryName()
+                        from1.cat3().getCategoryName()
                 ))
                 // TODO: 동행 여부 확인 필요
                 .companionYn(false)

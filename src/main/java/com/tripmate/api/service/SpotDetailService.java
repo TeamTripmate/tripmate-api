@@ -33,24 +33,10 @@ public class SpotDetailService {
     @Transactional(readOnly = true)
     public SpotDetailResponse getSpotDetail(Long spotId) {
         SpotCommonInfo spotCommonInfo = tourApiService.getSpotDetailInfo(spotId);
-        SpotType spotType = SpotType.fromTourApiCategory(spotCommonInfo.cat2());
         List<CompanionRecruitInfo> companionRecruits = this.getCompanionRecruitsBySpot(spotId);
 
-        return new SpotDetailResponse(
-                spotId,
-                spotCommonInfo.title(),
-                spotCommonInfo.overview(),
-                spotType,
-                spotCommonInfo.firstImage(),
-                spotCommonInfo.tel(),
-                new Location(
-                        spotCommonInfo.mapY(),
-                        spotCommonInfo.mapX(),
-                        new Address(
-                                spotCommonInfo.addr1(),
-                                spotCommonInfo.addr2()
-                        )
-                ),
+        return SpotDetailResponse.toResponse(
+                spotCommonInfo,
                 List.of(
                         new TripmateCharacter("인스타 모험자 아기 돌고래", TripmateCharacterType.DOLPHIN),
                         new TripmateCharacter("랜드마크 탐험가 아기 펭귄", TripmateCharacterType.PENGUIN),

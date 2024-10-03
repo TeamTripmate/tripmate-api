@@ -1,6 +1,7 @@
 package com.tripmate.integration.tourapi.service;
 
 import com.tripmate.integration.tourapi.TourApiRestClient;
+import com.tripmate.integration.tourapi.domain.SpotContentType;
 import com.tripmate.integration.tourapi.dto.request.TourApiRequestPath;
 import com.tripmate.integration.tourapi.dto.response.LocationBasedSpotApiResponse;
 import com.tripmate.integration.tourapi.dto.response.SpotCommonInfo;
@@ -10,13 +11,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.util.Objects;
+
 @RequiredArgsConstructor
 public class TourApiService {
 
     private final TourApiRestClient tourApiRestClient;
 
     public LocationBasedSpotApiResponse findSpotsByLocation(String latitude, String longitude, String range) {
+        return findSpotsByLocation(latitude, longitude, range, null);
+    }
+
+    public LocationBasedSpotApiResponse findSpotsByLocation(
+            String latitude, String longitude, String range, SpotContentType spotContentType
+    ) {
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+
+        if (spotContentType != null) {
+            queryParams.add("contentTypeId", spotContentType.getContentId());
+        }
+
         queryParams.add("mapX", longitude);
         queryParams.add("mapY", latitude);
         queryParams.add("radius", range);
@@ -47,6 +61,6 @@ public class TourApiService {
                 queryParams
         );
 
-        return response.getBody().spotItems().getFirst();
+        return Objects.requireNonNull(response.getBody()).spotItems().getFirst();
     }
 }
