@@ -48,7 +48,7 @@ public record SpotDetailResponse(
                 SpotType spotType = SpotType.fromTourApiCategory(spotCommonInfo.cat2());
 
                 return new SpotDetailResponse(
-                        Long.valueOf(spotCommonInfo.spotId()),
+                        spotCommonInfo.contentId(),
                         spotCommonInfo.title(),
                         spotCommonInfo.overview(),
                         spotType,

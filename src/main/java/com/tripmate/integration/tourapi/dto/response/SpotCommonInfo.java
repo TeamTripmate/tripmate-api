@@ -10,9 +10,6 @@ import com.tripmate.integration.tourapi.dto.mapper.SpotDeserializer;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record SpotCommonInfo(
 
-        @JsonProperty("contentId")
-        String spotId,
-
         @JsonProperty("contenttypeid")
         String contentTypeId,
 
