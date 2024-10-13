@@ -54,7 +54,9 @@ public class CompanionService {
             companionId, userId);
 
         boolean accompanyYn = false;
+        boolean requestYn = false;
         if (companionUserEntity.isPresent()) {
+            requestYn = true;
             String matchingStatus = companionUserEntity.get().getMatchingStatus();
             List<String> noLinkList = Arrays.asList(MatchingStatus.REQUEST.name(), MatchingStatus.REJECTED.name(),
                 MatchingStatus.CANCELED.name());
@@ -87,7 +89,7 @@ public class CompanionService {
         String ageRange = customAge(companionEntity.isSameAgeYn(), host.getBirthDate());
 
         return CompanionInfoResponse.toResponse(companionEntity, hostInfo, reviewInfos, reviewRanks, accompanyYn,
-            gender, ageRange);
+            gender, ageRange, requestYn);
     }
 
     @Transactional

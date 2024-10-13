@@ -37,11 +37,15 @@ public record CompanionInfoResponse(
     List<ReviewInfo> reviewInfos,
 
     @Schema(description = "이전 동행자 리뷰 태그 순위")
-    List<String> reviewRanks
+    List<String> reviewRanks,
+
+    @Schema(description = "유저의 신청 여부")
+    boolean requestYn
 ) {
 
     public static CompanionInfoResponse toResponse(CompanionEntity entity, HostInfo hostInfo,
-        List<ReviewInfo> reviewInfos, List<String> reviewRanks, boolean accompanyYn, String gender, String ageRange) {
+        List<ReviewInfo> reviewInfos, List<String> reviewRanks, boolean accompanyYn, String gender, String ageRange,
+        boolean requestYn) {
 
         return CompanionInfoResponse.builder()
             .title(entity.getTitle())
@@ -55,6 +59,7 @@ public record CompanionInfoResponse(
             .hostInfo(hostInfo)  // 호스트 정보
             .reviewInfos(reviewInfos)  // 리뷰 정보 리스트
             .reviewRanks(reviewRanks)  // 리뷰 태그 순위
+            .requestYn(requestYn)
             .build();
     }
 }
