@@ -213,7 +213,7 @@ public class CompanionService {
 
     @Transactional(readOnly = true, propagation = Propagation.MANDATORY)
     protected int calculateMatchingRatio(Long userId, Long hostId) {
-        int result = 0;
+        int result = 20;
 
         UserEntity host = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다", null));
@@ -233,7 +233,7 @@ public class CompanionService {
         hostKeywordSet.retainAll(userKeywordSet);
 
         if (host.getMbti().equals(user.getMbti())) {
-            result += 55;
+            result += 35;
         }
 
         result += hostKeywordSet.size() * 15;
