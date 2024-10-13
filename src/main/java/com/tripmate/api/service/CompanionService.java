@@ -23,13 +23,12 @@ import com.tripmate.api.entity.UserRepository;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
@@ -71,15 +70,20 @@ public class CompanionService {
         TripStyleEntity tripStyleEntity = tripStyleRepository.findById(host.getTripStyleId())
             .orElseThrow(() -> new NoSuchElementException("존재하지 않는 여행스타일ID입니다", null));
 
-        // TODO: 매칭 ratio는 개인화 개발 후 변경 필요
         HostInfo hostInfo = HostInfo.builder()
             .profileImage(host.getThumbnailImage())
             .kakaoNickname(host.getNickname())
             .characterName(tripStyleEntity.getStyleName())
             .characterType(host.getCharacterType())
-            .selectedKeyword(Arrays.asList(tripStyleEntity.getKeyword1(), tripStyleEntity.getKeyword2(),
-                tripStyleEntity.getKeyword3()))
-            .matchingRatio(30).build();
+            .selectedKeyword(   // 카테고리별 키워드 반환 필요
+                    Arrays.asList(
+                            tripStyleEntity.getKeyword1(),
+                            tripStyleEntity.getKeyword2(),
+                            tripStyleEntity.getKeyword3()
+                    )
+            )
+            .matchingRatio(calculateMatchingRatio(userId, host.getKakaoId()))
+            .build();
 
         ReviewResult reviewResult = companionReviewService.getReviewInfos(host.getKakaoId());
         List<ReviewInfo> reviewInfos = reviewResult.reviewInfos();
@@ -205,5 +209,35 @@ public class CompanionService {
         }
 
         return "연령무관";
+    }
+
+    @Transactional(readOnly = true, propagation = Propagation.MANDATORY)
+    protected int calculateMatchingRatio(Long userId, Long hostId) {
+        int result = 0;
+
+        UserEntity host = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다", null));
+
+        TripStyleEntity hostTripStyle = tripStyleRepository.findById(host.getTripStyleId())
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 여행스타일ID입니다", null));
+
+        UserEntity user = userRepository.findById(hostId)
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다", null));
+
+        TripStyleEntity userTripStyle = tripStyleRepository.findById(user.getTripStyleId())
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 여행스타일ID입니다", null));
+
+        Set<String> hostKeywordSet = new HashSet<>(hostTripStyle.getSelectedKeywords());
+        Set<String> userKeywordSet = new HashSet<>(userTripStyle.getSelectedKeywords());
+
+        hostKeywordSet.retainAll(userKeywordSet);
+
+        if (host.getMbti().equals(user.getMbti())) {
+            result += 55;
+        }
+
+        result += hostKeywordSet.size() * 15;
+
+        return result;
     }
 }
