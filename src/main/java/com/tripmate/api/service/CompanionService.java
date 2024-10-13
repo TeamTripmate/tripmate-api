@@ -10,16 +10,27 @@ import com.tripmate.api.dto.request.CollectCompanionRequest;
 import com.tripmate.api.dto.request.CompanionReviewRequest;
 import com.tripmate.api.dto.response.CollectCompanionResponse;
 import com.tripmate.api.dto.response.CompanionInfoResponse;
-import com.tripmate.api.entity.*;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import com.tripmate.api.entity.CompanionEntity;
+import com.tripmate.api.entity.CompanionRepository;
+import com.tripmate.api.entity.CompanionReviewEntity;
+import com.tripmate.api.entity.CompanionReviewRepository;
+import com.tripmate.api.entity.CompanionUserEntity;
+import com.tripmate.api.entity.CompanionUserRepository;
+import com.tripmate.api.entity.TripStyleEntity;
+import com.tripmate.api.entity.TripStyleRepository;
+import com.tripmate.api.entity.UserEntity;
+import com.tripmate.api.entity.UserRepository;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -72,9 +83,8 @@ public class CompanionService {
         List<ReviewInfo> reviewInfos = reviewResult.reviewInfos();
         List<String> reviewRanks = reviewResult.reviewRankList();
 
-        // TODO : 이후 로직 추가 필요!!!!!!
         String gender = customGender(companionEntity.isSameGenderYn(), host.getGender());
-        String ageRange = "연령무관";
+        String ageRange = customAge(companionEntity.isSameAgeYn(), host.getBirthDate());
 
         return CompanionInfoResponse.toResponse(companionEntity, hostInfo, reviewInfos, reviewRanks, accompanyYn,
             gender, ageRange);
@@ -162,11 +172,36 @@ public class CompanionService {
         companionUserRepository.save(companionUserEntity);
     }
 
+    /**
+     * 호스트 성별에 따라 동행 성별 반환 메서드
+     */
     private String customGender(boolean sameGenderYn, Gender hostGender) {
         if (sameGenderYn) {
             return hostGender.getGenderName() + "만";
         }
 
         return "성별무관";
+    }
+
+    /**
+     * 호스트 나이에 따라 동행 연령대 반환 메서드
+     */
+    private String customAge(boolean sameAgeYn, String birthDate) {
+
+        if (sameAgeYn) {
+            LocalDate today = LocalDate.now();
+
+            String yearPrefix = (Integer.parseInt(birthDate.substring(0, 2)) >= 40) ? "19" : "20";
+
+            DateTimeFormatter yyyyMMdd = DateTimeFormatter.ofPattern("yyyyMMdd");
+            LocalDate birthLocalDate = LocalDate.parse(yearPrefix + birthDate, yyyyMMdd);
+
+            int age = Period.between(birthLocalDate, today).getYears();
+            int ageGroup = (age / 10) * 10;
+
+            return ageGroup + "대만";
+        }
+
+        return "연령무관";
     }
 }

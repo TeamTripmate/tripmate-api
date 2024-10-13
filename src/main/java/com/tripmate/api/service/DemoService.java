@@ -87,7 +87,7 @@ public class DemoService {
             .profileImage("https://example.com/walker_profile666.jpg")  // 프로필 이미지
             .thumbnailImage("https://example.com/walker_thumbnail666.jpg")  // 썸네일 이미지
             .gender(Gender.MALE)  // 성별
-            .birthDate("1989")  // 출생년도
+            .birthDate("891015")  // 출생년도
             .tripStyleId(tse.getId())  // 여행 스타일 ID
             .characterType(TripmateCharacterType.TURTLE)  // 캐릭터 유형
             .deleted(false)  // 삭제 여부
