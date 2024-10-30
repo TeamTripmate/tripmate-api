@@ -23,8 +23,13 @@ import com.tripmate.api.entity.UserRepository;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -43,6 +48,10 @@ public class CompanionService {
     private final TripStyleRepository tripStyleRepository;
     private final CompanionReviewService companionReviewService;
 
+    private static final List<String> NO_LINK_LIST = Arrays.asList(MatchingStatus.REQUEST.name(),
+        MatchingStatus.REJECTED.name(),
+        MatchingStatus.CANCELED.name());
+
     @Transactional(readOnly = true)
     public CompanionInfoResponse getCompanionInfo(Long companionId, Long userId) {
 
@@ -57,9 +66,8 @@ public class CompanionService {
         if (companionUserEntity.isPresent()) {
             requestYn = true;
             String matchingStatus = companionUserEntity.get().getMatchingStatus();
-            List<String> noLinkList = Arrays.asList(MatchingStatus.REQUEST.name(), MatchingStatus.REJECTED.name(),
-                MatchingStatus.CANCELED.name());
-            if (!noLinkList.contains(matchingStatus)) {
+
+            if (!NO_LINK_LIST.contains(matchingStatus)) {
                 accompanyYn = true;
             }
         }
@@ -113,15 +121,6 @@ public class CompanionService {
             .sameAgeYn(collectCompanionRequest.sameAgeYn())
             .build();
 
-//        modelMapper.typeMap(
-//                CollectCompanionRequest.class, CompanionEntity.class)
-//            .addMappings(mapper -> {
-//                mapper.map(CollectCompanionRequest::date, CompanionEntity::setStartDate);
-//                mapper.map(CollectCompanionRequest::type, CompanionEntity::setCompanionType);
-//                mapper.map(CollectCompanionRequest::creatorId, CompanionEntity::setHostId);
-//            });
-//        CompanionEntity companionEntity = modelMapper.map(collectCompanionRequest, CompanionEntity.class);
-
         CompanionEntity ce = companionRepository.save(companionEntity);
         return CollectCompanionResponse.builder()
             .companionId(ce.getId()).build();
@@ -143,6 +142,7 @@ public class CompanionService {
             .orElseThrow(() -> new NoSuchElementException("존재하지않는 동행모집 컨텐츠입니다", null));
 
         Long hostId = companionEntity.getHostId();
+        ArrayList<CompanionReviewEntity> reviewEntities = new ArrayList<>();
 
         for (String like : likeList) {
             CompanionReviewEntity cre = CompanionReviewEntity.builder()
@@ -151,7 +151,7 @@ public class CompanionService {
                 .revieweeId(hostId)
                 .feedback(like)
                 .isPositive(true).build();
-            companionReviewRepository.save(cre);
+            reviewEntities.add(cre);
         }
 
         for (String bad : badList) {
@@ -161,8 +161,10 @@ public class CompanionService {
                 .revieweeId(hostId)
                 .feedback(bad)
                 .isPositive(false).build();
-            companionReviewRepository.save(cre);
+            reviewEntities.add(cre);
         }
+
+        companionReviewRepository.saveAll(reviewEntities);
     }
 
     @Transactional
