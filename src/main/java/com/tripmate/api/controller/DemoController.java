@@ -33,4 +33,18 @@ public class DemoController {
 
     }
 
+    @Operation(
+        summary = "데모 엔티티 데이터 생성용 API2",
+        description = "유저, 리뷰 데이터 만개 추가"
+    )
+    @PostMapping("/add10000")
+    public ResponseEntity<TripmateApiResponse<String>> add10000Data() {
+
+        demoService.addData10000();
+
+        return ResponseEntity.ok(TripmateApiResponse.success("데이터 추가 완료"));
+
+
+    }
+
 }

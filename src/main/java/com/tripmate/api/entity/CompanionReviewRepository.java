@@ -17,4 +17,7 @@ public interface CompanionReviewRepository extends JpaRepository<CompanionReview
 
     List<CompanionReviewEntity> findCompanionReviewEntitiesByCompanionId(Long companionId);
 
+    @Query("select cre from CompanionReviewEntity cre where cre.revieweeId = :userId and cre.companionId in :companionIdList")
+    List<CompanionReviewEntity> findCompanionReviewEntitiesByCompanionIdList(List<Long> companionIdList, Long userId);
+
 }

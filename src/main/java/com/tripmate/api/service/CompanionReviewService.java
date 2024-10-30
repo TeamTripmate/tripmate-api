@@ -12,7 +12,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +36,7 @@ public class CompanionReviewService {
      *
      * @param hostId FLOW
      *               동행 엔티티에서 hostID로 모든 동행 엔티티 가져옴
-     *               동행후기 엔티티에서 동행ID 존재 여부 확인
+     *               동행후기 엔티티에서 동행 엔티티 호스트 ID랑 동행후기 엔티티의 revieweeId가 hostId인 데이터 한 번에 가져옴
      *               동행후기 엔티티에서 listList, badList 생성 및 reviewRank 계산
      *               <p>
      *               reviewInfo, reviewRank 생성
@@ -43,13 +45,18 @@ public class CompanionReviewService {
 
         List<CompanionEntity> companionEntities = companionRepository.findCompanionEntitiesByHostId(hostId);
 
+        Map<Long, List<CompanionReviewEntity>> companionReviewEntityMap = companionReviewRepository.findCompanionReviewEntitiesByCompanionIdList(
+                companionEntities.stream().map(CompanionEntity::getId).toList(), hostId)
+            .stream()
+            .collect(Collectors.groupingBy(CompanionReviewEntity::getCompanionId));
+
         List<ReviewInfo> reviewInfos = new ArrayList<>();
-        HashMap<String, Integer> reviewRanks = new HashMap<>();
+        Map<String, Integer> reviewRanks = new HashMap<>();
 
         for (CompanionEntity companionEntity : companionEntities) {
 
-            List<CompanionReviewEntity> companionReviewEntities = companionReviewRepository.findCompanionReviewEntitiesByCompanionId(
-                companionEntity.getId());
+            List<CompanionReviewEntity> companionReviewEntities = companionReviewEntityMap.getOrDefault(
+                companionEntity.getId(), List.of());
 
             if (companionReviewEntities.isEmpty()) {
                 continue;
@@ -76,7 +83,8 @@ public class CompanionReviewService {
             }
 
             // UserInfo 만들기
-            UserInfo userInfo = userRepository.joinUserEntityAndTripStyleEntityForUserInfo(reviewerId);
+            UserInfo userInfo = userRepository.joinUserEntityAndTripStyleEntityForUserInfo(reviewerId)
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 값입니다"));
             // ReviewInfo 만들기
             ReviewInfo reviewInfo = ReviewInfo.builder()
                 .userInfo(userInfo)
@@ -91,9 +99,77 @@ public class CompanionReviewService {
             .sorted(Entry.<String, Integer>comparingByValue().reversed())
             .limit(3)
             .map(Entry::getKey)
-            .collect(Collectors.toList());
+            .toList();
 
         return ReviewResult.builder().reviewInfos(reviewInfos).reviewRankList(reviewRankList).build();
     }
+
+    /**
+     * 호스트에 대한 모든 동행 리뷰 가져오는 메서드
+     *
+     * @param hostId FLOW
+     *               동행 엔티티에서 hostID로 모든 동행 엔티티 가져옴
+     *               동행후기 엔티티에서 동행ID 존재 여부 확인
+     *               동행후기 엔티티에서 listList, badList 생성 및 reviewRank 계산
+     *               <p>
+     *               reviewInfo, reviewRank 생성
+     */
+//    public ReviewResult getReviewInfos(Long hostId) {
+//
+//        List<CompanionEntity> companionEntities = companionRepository.findCompanionEntitiesByHostId(hostId);
+//
+//        List<ReviewInfo> reviewInfos = new ArrayList<>();
+//        Map<String, Integer> reviewRanks = new HashMap<>();
+//
+//        for (CompanionEntity companionEntity : companionEntities) {
+//
+//            List<CompanionReviewEntity> companionReviewEntities = companionReviewRepository.findCompanionReviewEntitiesByCompanionId(
+//                companionEntity.getId());
+//
+//            if (companionReviewEntities.isEmpty()) {
+//                continue;
+//            }
+//
+//            ArrayList<String> likeList = new ArrayList<>();
+//            ArrayList<String> badList = new ArrayList<>();
+//            Long reviewerId = null;
+//            LocalDateTime reviewDate = null;
+//
+//            for (CompanionReviewEntity companionReviewEntity : companionReviewEntities) {
+//
+//                String feedback = companionReviewEntity.getFeedback();
+//                reviewRanks.put(feedback, reviewRanks.getOrDefault(feedback, 0) + 1);
+//                if (reviewerId == null) {
+//                    reviewerId = companionReviewEntity.getReviewerId();
+//                    reviewDate = companionReviewEntity.getCreatedAt();
+//                }
+//                if (companionReviewEntity.isPositive()) {
+//                    likeList.add(feedback);
+//                } else {
+//                    badList.add(feedback);
+//                }
+//            }
+//
+//            // UserInfo 만들기
+//            UserInfo userInfo = userRepository.joinUserEntityAndTripStyleEntityForUserInfo(reviewerId)
+//                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 값입니다"));
+//            // ReviewInfo 만들기
+//            ReviewInfo reviewInfo = ReviewInfo.builder()
+//                .userInfo(userInfo)
+//                .reviewDate(reviewDate)
+//                .likeList(likeList)
+//                .badList(badList).build();
+//            // HashMap으로 ReviewInfo & ReviewRank 담기
+//            reviewInfos.add(reviewInfo);
+//        }
+//
+//        List<String> reviewRankList = reviewRanks.entrySet().stream()
+//            .sorted(Entry.<String, Integer>comparingByValue().reversed())
+//            .limit(3)
+//            .map(Entry::getKey)
+//            .toList();
+//
+//        return ReviewResult.builder().reviewInfos(reviewInfos).reviewRankList(reviewRankList).build();
+//    }
 
 }

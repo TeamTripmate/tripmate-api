@@ -13,6 +13,7 @@ import com.tripmate.api.entity.CompanionRepository;
 import com.tripmate.api.entity.CompanionUserEntity;
 import com.tripmate.api.entity.CompanionUserRepository;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -40,10 +41,11 @@ public class TripListService {
         ArrayList<MyApplyCompanionListResponse> responses = new ArrayList<>();
 
         for (MyApplyCompanionListInfo myApplyCompanionListInfo : myApplyCompanionListInfos) {
-            ArrayList<String> keywords = new ArrayList<>();
-            keywords.add(myApplyCompanionListInfo.getKeyword1());
-            keywords.add(myApplyCompanionListInfo.getKeyword2());
-            keywords.add(myApplyCompanionListInfo.getKeyword3());
+
+            List<String> keywords = Arrays.asList(
+                myApplyCompanionListInfo.getKeyword1(), myApplyCompanionListInfo.getKeyword2(),
+                myApplyCompanionListInfo.getKeyword3()
+            );
 
             TripHostInfo tripHostInfo = TripHostInfo.builder()
                 .selectedKeyword(keywords)
