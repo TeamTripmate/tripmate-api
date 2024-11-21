@@ -1,5 +1,6 @@
-package com.tripmate.api.login;
+package com.tripmate.api.login.v1;
 
+import com.tripmate.api.login.LoginJwtInputDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

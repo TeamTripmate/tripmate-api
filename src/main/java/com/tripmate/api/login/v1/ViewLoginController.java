@@ -1,4 +1,4 @@
-package com.tripmate.api.login;
+package com.tripmate.api.login.v1;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

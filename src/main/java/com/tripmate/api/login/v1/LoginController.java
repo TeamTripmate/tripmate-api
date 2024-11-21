@@ -1,11 +1,10 @@
-package com.tripmate.api.login;
+package com.tripmate.api.login.v1;
 
-import com.tripmate.api.domain.user.TripmateCharacterType;
-import com.tripmate.api.dto.request.TripmatePersonalizedTestRequest;
 import com.tripmate.api.dto.request.WithdrawalRequest;
 import com.tripmate.api.dto.response.MypageUserInfoResponse;
 import com.tripmate.api.dto.response.TripmateApiResponse;
-import com.tripmate.api.dto.response.TripmatePersonalizedTestResponse;
+import com.tripmate.api.login.LoginRequest;
+import com.tripmate.api.login.LoginResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

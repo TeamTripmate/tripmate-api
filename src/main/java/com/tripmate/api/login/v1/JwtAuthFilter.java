@@ -1,4 +1,4 @@
-package com.tripmate.api.login;
+package com.tripmate.api.login.v1;
 
 import com.tripmate.api.entity.UserRepository;
 import io.jsonwebtoken.Claims;
