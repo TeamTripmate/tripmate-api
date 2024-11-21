@@ -1,9 +1,13 @@
-package com.tripmate.api.login;
+package com.tripmate.api.login.v1;
 
 
 import com.tripmate.api.dto.response.MypageUserInfoResponse;
 import com.tripmate.api.entity.UserEntity;
 import com.tripmate.api.entity.UserRepository;
+import com.tripmate.api.login.KakaoTokenResponseDto;
+import com.tripmate.api.login.KakaoUserInfoResponseDto;
+import com.tripmate.api.login.LoginJwtInputDto;
+import com.tripmate.api.login.LoginRequest;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
